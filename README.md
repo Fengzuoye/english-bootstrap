@@ -57,6 +57,7 @@
 ### A. 直接使用（推荐）
 1. 手机：安装 `dist/EnglishBootstrapReader-v1.4.apk`（允许“未知来源”）。
 2. 电脑：解压 `dist/BootstrapReader-web.zip`，双击 `index.html`。
+   这两个文件已随仓库提供，可直接下载，无需额外构建。
 3. GitHub 发布建议：把 APK 与网页 zip 作为 **Release assets** 上传，
    源码仓库只保留代码与 markdown。
    （`english-bootstrap-v1.4-source.zip` 为纯源码包，不含 `dist/` 产物。）

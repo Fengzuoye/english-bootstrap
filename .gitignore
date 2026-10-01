@@ -1,7 +1,6 @@
 __pycache__/
 *.pyc
-dist/*.apk
-dist/*.zip
+dist/*.bundle
 work/
 data_src/
 *.keystore
