@@ -34,7 +34,8 @@ def cp_tree(src, dst):
 
 
 def main():
-    print("docs:", cp_files(DOC_SRC, REL, ["README.md", "LICENSE", "NOTICE.md", ".gitignore"]))
+    print("docs:", cp_files(DOC_SRC, REL,
+                            ["README.md", "LICENSE", "NOTICE.md", ".gitignore", ".gitattributes"]))
     print("scripts:", cp_files(DOC_SRC / "scripts", REL / "scripts", ["*.py", "*.ps1"]))
     print("layers:", cp_files(ROOT / "layers", REL / "layers", ["*.md"]))
     print("tools:", cp_files(ROOT / "tools", REL / "tools",
@@ -57,11 +58,12 @@ def main():
     source = ROOT / "dist" / "english-bootstrap-v1.4-source.zip"
     with zipfile.ZipFile(full, "w", zipfile.ZIP_DEFLATED, compresslevel=9) as z:
         for p in sorted(REL.rglob("*")):
-            if p.is_file():
+            if p.is_file() and ".git" not in p.parts:
                 z.write(p, p.relative_to(REL.parent))
     with zipfile.ZipFile(source, "w", zipfile.ZIP_DEFLATED, compresslevel=9) as z:
         for p in sorted(REL.rglob("*")):
-            if p.is_file() and p.relative_to(REL).parts[0] != "dist":
+            if (p.is_file() and ".git" not in p.parts
+                    and p.relative_to(REL).parts[0] != "dist"):
                 z.write(p, p.relative_to(REL.parent))
     # 旧文件名同步为干净内容，避免误拿旧包
     shutil.copy2(full, ROOT / "dist" / "english-bootstrap-github.zip")
