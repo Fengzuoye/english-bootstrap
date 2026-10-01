@@ -1,5 +1,9 @@
 # English Bootstrap · 英语自举词库与 App
 
+> A self-bootstrapping English learner's dictionary: the Oxford 3000 core defined
+> using only English already learned, with an offline Android app and a web reader.
+> 用英语解释英语的自举词库：牛津 3000 全覆盖，含离线安卓 App 与网页版。
+
 从 201 个公理词出发，只用**已经定义过的英语词**解释新词，一层层扩展到牛津 3000，
 并把这套词库做成可离线使用的 Android App 与网页版。
 
