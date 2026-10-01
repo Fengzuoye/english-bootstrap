@@ -1,0 +1,116 @@
+{
+  "light": {
+    "senses": [
+      {"pos": "noun", "zh": "光", "def": "the brightness that comes from the sun, a fire, or a lamp and lets us see", "ex": "The light in this room is soft."},
+      {"pos": "noun", "zh": "灯", "def": "an object that gives brightness, such as a lamp", "ex": "Please turn on the light."},
+      {"pos": "adjective", "zh": "轻的", "def": "not heavy; easy to lift or carry", "ex": "This box is light."},
+      {"pos": "adjective", "zh": "淡的；浅的", "def": "pale in color", "ex": "She wears a light blue coat."},
+      {"pos": "verb", "zh": "点燃；照亮", "def": "to make something start to burn or to give light to a place", "ex": "He lights a candle at night."}
+    ],
+    "phrases": [
+      {"p": "light up", "zh": "亮起来", "def": "to become bright, or to make something bright", "ex": "Her face lights up when she laughs."},
+      {"p": "traffic light", "zh": "红绿灯", "def": "a light at a road crossing that tells cars when to go or stop", "ex": "The car stops at the red traffic light."}
+    ]
+  },
+  "run": {
+    "senses": [
+      {"pos": "verb", "zh": "跑", "def": "to move fast on your feet", "ex": "The children run in the park."},
+      {"pos": "verb", "zh": "经营；管理", "def": "to control and be responsible for a business or a group", "ex": "Her family runs a small shop."},
+      {"pos": "verb", "zh": "运转", "def": "to work or to make a machine work", "ex": "The engine runs all night."},
+      {"pos": "noun", "zh": "跑步；一段路程", "def": "a period of running, or a journey made by a vehicle", "ex": "I go for a run before work."}
+    ],
+    "phrases": [
+      {"p": "run out of", "zh": "用完", "def": "to have none of something left", "ex": "We ran out of milk this morning."},
+      {"p": "run into", "zh": "撞上；偶然遇到", "def": "to hit someone or something by accident, or to meet someone by chance", "ex": "I ran into an old friend on the street."}
+    ]
+  },
+  "head": {
+    "senses": [
+      {"pos": "noun", "zh": "头", "def": "the top part of the body with the eyes, ears, nose, and mouth", "ex": "She shakes her head."},
+      {"pos": "noun", "zh": "头脑；理解力", "def": "the mind, where we think and remember", "ex": "A good idea came into my head."},
+      {"pos": "noun", "zh": "负责人", "def": "the person who leads a group, school, or company", "ex": "He is the head of the school."},
+      {"pos": "verb", "zh": "朝…去", "def": "to go in a direction or toward a place", "ex": "We head for the station."}
+    ],
+    "phrases": [
+      {"p": "head for", "zh": "前往", "def": "to move toward a place or a result", "ex": "The ship heads for the port."},
+      {"p": "keep one's head", "zh": "保持冷静", "def": "to stay calm when things are difficult", "ex": "Keep your head and call for help."}
+    ]
+  },
+  "right": {
+    "senses": [
+      {"pos": "adjective", "zh": "正确的", "def": "true or correct", "ex": "You gave the right answer."},
+      {"pos": "adjective", "zh": "右边的", "def": "on the side where most people write", "ex": "My right hand is hurt."},
+      {"pos": "noun", "zh": "权利", "def": "something that the law says a person may do or have", "ex": "Every child has the right to learn."},
+      {"pos": "adverb", "zh": "正好；立即", "def": "exactly, or without delay", "ex": "The keys are right on the table."}
+    ],
+    "phrases": [
+      {"p": "all right", "zh": "好的；没事的", "def": "acceptable, safe, or well", "ex": "Are you all right?"}
+    ]
+  },
+  "mean": {
+    "senses": [
+      {"pos": "verb", "zh": "意思是", "def": "to have a meaning; to show or express an idea", "ex": "What does this word mean?"},
+      {"pos": "verb", "zh": "打算；意思是说", "def": "to intend to say or do something", "ex": "I mean to finish today."},
+      {"pos": "adjective", "zh": "刻薄的；吝啬的", "def": "unkind, or not willing to share or spend", "ex": "Do not be mean to your sister."}
+    ],
+    "phrases": [
+      {"p": "mean to", "zh": "打算", "def": "to plan or intend to do something", "ex": "I mean to call you later."}
+    ]
+  },
+  "still": {
+    "senses": [
+      {"pos": "adverb", "zh": "仍然；还是", "def": "continuing up to now, or in spite of that", "ex": "It is late, but she is still working."},
+      {"pos": "adjective", "zh": "静止的；安静的", "def": "not moving; calm and quiet", "ex": "The water of the lake is still."},
+      {"pos": "adverb", "zh": "更（加强比较）", "def": "even more than before", "ex": "The night grew still darker."}
+    ],
+    "phrases": [
+      {"p": "still life", "zh": "静物画", "def": "a painting of things that do not move, such as fruit or flowers", "ex": "She paints a still life of apples."}
+    ]
+  },
+  "bank": {
+    "senses": [
+      {"pos": "noun", "zh": "银行", "def": "a place where people keep and borrow money", "ex": "I put my money in the bank."},
+      {"pos": "noun", "zh": "河岸；堤岸", "def": "the ground along the side of a river", "ex": "We sit on the bank of the river."},
+      {"pos": "noun", "zh": "库；储备", "def": "a store of something that people can use", "ex": "The hospital keeps a blood bank."}
+    ],
+    "phrases": [
+      {"p": "bank on", "zh": "指望", "def": "to depend on something happening", "ex": "Do not bank on good weather tomorrow."},
+      {"p": "savings bank", "zh": "储蓄银行", "def": "a bank that keeps people's savings", "ex": "She opens an account at the savings bank."}
+    ]
+  },
+  "point": {
+    "senses": [
+      {"pos": "noun", "zh": "观点；要点", "def": "an idea or the most important part of what someone says", "ex": "That is a good point."},
+      {"pos": "noun", "zh": "点；尖端", "def": "a sharp end, or a small mark or place", "ex": "The pencil has a fine point."},
+      {"pos": "noun", "zh": "分数", "def": "a unit that counts a score or a mark", "ex": "Our team won by three points."},
+      {"pos": "verb", "zh": "指；指向", "def": "to show where something is by holding out your finger", "ex": "She points at the map."}
+    ],
+    "phrases": [
+      {"p": "point out", "zh": "指出", "def": "to say or show something that others may not have seen", "ex": "He points out the mistake."},
+      {"p": "point of view", "zh": "观点", "def": "the way one person sees a matter", "ex": "From my point of view, the plan is good."}
+    ]
+  },
+  "table": {
+    "senses": [
+      {"pos": "noun", "zh": "桌子", "def": "a piece of furniture with a flat top and legs", "ex": "The food is on the table."},
+      {"pos": "noun", "zh": "表；表格", "def": "a set of facts or numbers shown in rows", "ex": "The table shows the price of each item."},
+      {"pos": "noun", "zh": "（就餐的）一桌人", "def": "the group of people sitting at a table", "ex": "The whole table laughs at the joke."}
+    ],
+    "phrases": [
+      {"p": "at table", "zh": "在用餐", "def": "having a meal at a table", "ex": "Do not shout at table."},
+      {"p": "turn the tables", "zh": "扭转局面", "def": "to change a situation so that you now have the advantage", "ex": "The second goal turned the tables."}
+    ]
+  },
+  "spring": {
+    "senses": [
+      {"pos": "noun", "zh": "春天", "def": "the season after winter, when plants begin to grow", "ex": "Flowers come out in spring."},
+      {"pos": "noun", "zh": "弹簧", "def": "a curved piece of metal that returns to its shape after you press it", "ex": "The bed has soft springs."},
+      {"pos": "noun", "zh": "泉", "def": "a place where water comes up from the ground", "ex": "The village gets water from a spring."},
+      {"pos": "verb", "zh": "跳；跃", "def": "to jump up suddenly", "ex": "The cat springs onto the wall."}
+    ],
+    "phrases": [
+      {"p": "spring up", "zh": "突然出现", "def": "to appear or grow quickly", "ex": "New shops spring up in the town."},
+      {"p": "hot spring", "zh": "温泉", "def": "a place where warm water comes up from the ground", "ex": "They bathe in a hot spring."}
+    ]
+  }
+}

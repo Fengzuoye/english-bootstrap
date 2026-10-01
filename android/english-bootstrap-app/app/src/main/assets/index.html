@@ -1,0 +1,1447 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Bootstrap Reader</title>
+<style>
+*{box-sizing:border-box}
+body{margin:0;background:#f7f5f0;color:#2d2a26;
+  font-family:"Segoe UI","Microsoft YaHei",sans-serif;padding-bottom:120px}
+header{position:sticky;top:0;background:#1f6f6b;color:#fff;padding:10px 12px;z-index:5}
+header h1{margin:0;font-size:17px;display:inline}
+.tabs{float:right}
+.tabs button{background:none;border:1px solid #fff;color:#fff;border-radius:6px;
+  padding:3px 10px;margin-left:4px;font-size:13px}
+.tabs button.on{background:#fff;color:#1f6f6b}
+main{max-width:760px;margin:0 auto;padding:12px}
+.row{display:flex;gap:6px;margin:8px 0}
+.row input{flex:1;padding:8px;border:1px solid #ddd;border-radius:8px}
+.row button{padding:8px 12px;border:none;border-radius:8px;background:#1f6f6b;color:#fff}
+textarea{width:100%;height:90px;border:1px solid #ddd;border-radius:8px;padding:8px;font-size:14px}
+.article{background:#fffdf9;border:1px solid #e6dfd3;border-radius:10px;padding:14px 16px;
+  line-height:2;font-size:16px;font-family:Georgia,serif}
+.article .w{cursor:pointer;border-radius:4px;padding:0 1px}
+.article .w:hover{background:#cfe4e2}
+.article .unknown{color:#9c6b3c;border-bottom:1px dashed #9c6b3c;cursor:pointer}
+.meta{color:#7a7267;font-size:12px;margin:6px 2px}
+.panel{position:fixed;left:0;right:0;top:9vh;background:#fff;border:0;border-radius:18px 18px 0 0;
+  max-height:82vh;overflow:auto;padding:18px 20px 26px;box-shadow:0 -6px 18px rgba(0,0,0,.18);
+  z-index:6;font-size:16px}
+.panel .x{float:right;border:none;background:#eee;border-radius:6px;padding:2px 10px}
+.panel .pw{font-size:24px;font-family:Georgia,serif}
+.backdrop{position:fixed;inset:0;background:rgba(30,26,22,.35);z-index:5;display:none}
+.badge{display:inline-block;background:#2f6f6b;color:#fff;border-radius:999px;
+  font-size:11px;padding:2px 8px;margin-left:6px;vertical-align:middle}
+.panel .d{font-family:Georgia,serif;font-size:15px;color:#34302b;background:#e4f0ee;
+  border-radius:8px;padding:6px 10px;margin-top:6px}
+.panel .e{font-style:italic;color:#4a453f;font-size:14px;margin-top:6px}
+.panel .zh{color:#7a7267;font-size:13px;margin-top:6px}
+.search{width:100%;padding:10px;border:1px solid #ddd;border-radius:8px;margin:8px 0;font-size:15px}
+.drow{background:#fff;border:1px solid #e6dfd3;border-radius:14px;padding:16px 18px;
+  margin:10px 0;cursor:pointer;display:flex;flex-direction:column;justify-content:center}
+.drow b{font-family:Georgia,serif;font-size:24px}
+.drow .d{color:#4a453f;font-size:16px;margin-top:4px;font-family:Georgia,serif}
+.drow .rich{background:#b5893d}
+.drow .exbtn{margin-top:10px;align-self:flex-start;background:#e8f1ef;color:#1f6f6b;
+  border:1px solid #c4dcd8;border-radius:999px;font-size:13px;padding:6px 12px}
+.drow.open{border-color:#8fbab5;box-shadow:0 3px 12px rgba(31,111,107,.12)}
+.extbox{margin-top:12px;border-top:1px solid #eee5d8;padding-top:8px;width:100%}
+.extsec{font-weight:700;color:#1f6f6b;font-size:13px;letter-spacing:.4px;margin:10px 0 4px}
+.sense{margin:7px 0;font-family:Georgia,serif;font-size:15px;line-height:1.55;color:#34302b}
+.sense b{color:#1f6f6b}
+.sense .zhs,.phrase .zhs{color:#9a8b6f;font-size:12px;margin-left:4px}
+.sense i,.phrase .pex{color:#6f675c;font-size:13px;margin-left:4px}
+.phrase{margin:7px 0;padding:8px 10px;background:#faf7f0;border-radius:8px;
+  border:1px solid #ece4d6;font-family:Georgia,serif;font-size:15px;line-height:1.5}
+.phrase b{color:#9a6b25}
+.msg{background:#f6f0e4;border:1px solid #e6dfd3;color:#7a5b2e;border-radius:10px;
+  padding:10px 12px;font-size:14px;margin:8px 0;line-height:1.7}
+.gseg{display:flex;gap:6px;margin:6px 0}
+.gseg button{flex:1;padding:9px 4px;border:1px solid #c4dcd8;background:#fff;color:#1f6f6b;
+  border-radius:10px;font-size:14px}
+.gseg button.on{background:#1f6f6b;color:#fff}
+.chips{display:flex;flex-wrap:wrap;gap:6px;margin:4px 0 8px}
+.chip{background:#fff;border:1px solid #e2d9c8;color:#6b5b3e;border-radius:999px;
+  padding:5px 11px;font-size:13px}
+.chip.on{background:#b5893d;border-color:#b5893d;color:#fff}
+.vrow{background:#fff;border:1px solid #efe7d8;border-radius:12px;padding:9px 12px;
+  margin:6px 0;cursor:pointer;display:block}
+.vrow b{font-family:Georgia,serif;font-size:20px}
+.vrow .d{color:#7a7267;font-size:13px;font-family:Georgia,serif;margin-top:2px;
+  white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+.vmore{width:100%;padding:8px;border:1px solid #c4dcd8;background:#fff;color:#1f6f6b;
+  border-radius:10px;font-size:14px}
+.vhome{display:flex;flex-direction:column;gap:12px;margin-top:6px}
+.vbox{background:#fff;border:1px solid #e2d9c8;border-radius:16px;padding:18px 16px;
+  cursor:pointer;box-shadow:0 1px 4px rgba(0,0,0,.04)}
+.vbox .vb1{font-size:22px;font-weight:700;color:#2d2a26;font-family:Georgia,serif}
+.vbox .vb2{color:#7a7267;font-size:14px;margin-top:4px;line-height:1.6}
+.vbox .vb3{display:inline-block;margin-top:8px;background:#e8f1ef;color:#1f6f6b;
+  border-radius:999px;padding:3px 10px;font-size:12px}
+.back{background:none;border:none;color:#1f6f6b;font-size:15px;padding:2px 0 6px;cursor:pointer}
+.subtitle{color:#7a7267;font-size:13px;margin:2px 2px 8px}
+.lbox{display:flex;align-items:center;background:#fff;border:1px solid #efe7d8;
+  border-radius:14px;padding:13px 14px;margin:8px 0;cursor:pointer;gap:10px}
+.lbox .ln{font-family:Georgia,serif;font-size:17px;font-weight:700;flex:1}
+.lbox .lr{color:#9a8b6f;font-size:12px}
+.catgrid{display:grid;grid-template-columns:repeat(2,1fr);gap:10px;margin-top:6px}
+.cbox{background:#fff;border:1px solid #efe7d8;border-radius:14px;padding:12px;
+  cursor:pointer}
+.cbox .cb1{font-size:15px;font-weight:700;color:#2d2a26}
+.cbox .cb2{color:#9a8b6f;font-size:12px;margin-top:3px}
+.ipa{color:#7b8b89;font-family:Georgia,"Segoe UI",serif;font-size:13px;margin-left:6px}
+.panel .ipa{display:block;font-size:19px;margin:6px 0 2px}
+.vochead{position:sticky;top:var(--hhead,52px);z-index:4;background:#f7f5f0;
+  padding:6px 0 4px;border-bottom:1px solid #eee5d8;transition:box-shadow .2s ease}
+.vochead.stuck{box-shadow:0 3px 10px rgba(0,0,0,.07)}
+.vocbar{display:flex;align-items:center;gap:10px;min-height:44px}
+.vocbar .vtitle{font-weight:700;color:#2d2a26;font-size:16px;flex:1;
+  white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+.vocbar .back{min-height:44px;padding:0 12px;border:1px solid #c4dcd8;border-radius:10px;
+  background:#fff;color:#1f6f6b;font-size:15px}
+.view{animation:vocIn .22s ease-out}
+@keyframes vocIn{from{opacity:.35;transform:translateX(14px)}to{opacity:1;transform:none}}
+.state{padding:18px 14px;border-radius:12px;font-size:15px;line-height:1.7}
+.state.loading{background:#f2f7f6;color:#1f6f6b}
+.state.empty{background:#f6f0e4;color:#7a5b2e}
+.state.error{background:#fdeceb;color:#a33a2f}
+.retry{margin-top:10px;min-height:44px;padding:0 14px;border-radius:10px;
+  border:1px solid #a33a2f;background:#fff;color:#a33a2f;font-size:15px}
+.chip,.lbox,.cbox,.vbox,.vrow{min-height:44px}
+.lbox,.cbox,.vbox,.vrow,.chip{transition:transform .18s ease,box-shadow .18s ease}
+.lbox:active,.cbox:active,.vbox:active{transform:scale(.985)}
+#vroot,#vlist{-webkit-overflow-scrolling:touch;padding-bottom:6px;position:relative}
+.chips.collapsed{flex-wrap:nowrap;overflow:hidden;max-height:46px}
+.chipmore{min-height:44px;padding:5px 12px;border-radius:999px;border:1px dashed #c4a76a;
+  background:#fffdf7;color:#8a6d3b;font-size:13px;white-space:nowrap}
+.vcard{background:#fff;border:1px solid #efe7d8;border-radius:14px;padding:12px 14px;margin:10px 0}
+.vcard .vtop{display:flex;align-items:baseline;flex-wrap:wrap;gap:6px}
+.vcard .vw{font-family:Georgia,serif;font-size:22px;color:#2d2a26}
+.vcard .layer{color:#9a8b6f;font-size:12px}
+.vcard .d{font-family:Georgia,serif;font-size:15px;color:#34302b;margin-top:7px;line-height:1.6}
+.vcard .e{font-style:italic;color:#5b554d;font-size:14px;margin-top:6px}
+.vcard .zh{color:#8a8272;font-size:13px;margin-top:4px}
+.gacc{background:#fff;border:1px solid #e6dfd3;border-radius:14px;margin:10px 0;overflow:hidden}
+.ghead{display:flex;align-items:center;gap:10px;min-height:52px;padding:12px 14px;cursor:pointer}
+.ghead .gt{font-weight:700;font-size:17px;flex:1;color:#2d2a26}
+.ghead .gl{color:#9a8b6f;font-size:12px}
+.ghead .arw{transition:transform .2s ease;color:#1f6f6b;font-size:13px}
+.gacc.open .arw{transform:rotate(90deg)}
+.gbody{display:none;padding:0 14px 14px;border-top:1px solid #f0e9dc}
+.gacc.open .gbody{display:block;animation:vocIn .22s ease-out}
+.gnote{font-size:15px;line-height:1.8;color:#4a453f;background:#f7f4ec;border-radius:10px;
+  padding:11px 13px;margin-top:12px}
+.gsec{font-size:13px;font-weight:700;color:#1f6f6b;letter-spacing:.4px;margin:14px 0 6px}
+.gex{font-family:Georgia,serif;font-style:italic;color:#3f3a34;font-size:15px;margin:5px 0;
+  padding:4px 0 4px 10px;border-left:3px solid #cfe0dd}
+.substrip{display:flex;gap:8px;overflow-x:auto;-webkit-overflow-scrolling:touch;
+  padding:6px 2px 10px;scroll-snap-type:x proximity}
+.subchip{flex:0 0 auto;min-width:118px;min-height:52px;border-radius:12px;
+  border:1px solid #e2d9c8;background:#fff;padding:8px 12px;text-align:left;
+  scroll-snap-align:start}
+.subchip.on{background:#1f6f6b;border-color:#1f6f6b;color:#fff}
+.subchip .sc1{display:block;font-size:15px;font-weight:700}
+.subchip .sc2{display:block;font-size:12px;color:#9a8b6f;margin-top:2px}
+.subchip.on .sc2{color:#dff0ee}
+.imgbtn{margin-left:auto;width:44px;height:44px;min-width:44px;border-radius:12px;
+  border:1px solid #cfe0dd;background:#f2f7f6;color:#1f6f6b;font-size:20px;
+  line-height:1;display:inline-flex;align-items:center;justify-content:center}
+.imgbtn:active{transform:scale(.96)}
+.panel .imgbtn{float:right;margin-left:12px}
+.wlink{cursor:pointer;border-bottom:1px dotted #9fb8b5}
+.wlink.tap1{background:#dff0ee}
+.hint{font-size:12px;color:#9a8b6f;margin-top:5px}
+.jumpbar{display:flex;align-items:center;gap:8px;margin:6px 0 2px;
+  font-size:14px;color:#5b554d}
+.jumpbar input{width:88px;min-height:40px;padding:6px 10px;border:1px solid #ddd;
+  border-radius:9px;font-size:16px;text-align:center}
+.jumpbar button{min-height:40px;padding:0 14px;border-radius:9px;border:1px solid #1f6f6b;
+  background:#fff;color:#1f6f6b;font-size:14px}
+.jumpbar button:active{transform:scale(.97)}
+@media (max-width:640px){
+  main{max-width:100%;padding:8px}
+  h1{font-size:20px}
+  .row button,.tabs button{font-size:15px;padding:8px 12px}
+  .row input{font-size:16px}
+  textarea{font-size:16px}
+  .article{font-size:18px;line-height:2.1;padding:12px}
+  .drow{min-height:30vh;padding:20px 18px}
+  .drow b{font-size:30px}
+  .drow .d{font-size:18px}
+  .drow .exbtn{font-size:15px;padding:8px 14px}
+  .sense,.phrase{font-size:17px}
+  .sense i,.phrase .pex{font-size:15px}
+  .extsec{font-size:14px}
+  .vrow b{font-size:24px}
+  .vrow .d{font-size:14px}
+  .gseg button{font-size:16px}
+  .chip{font-size:15px;padding:7px 14px}
+  .vbox .vb1{font-size:26px}
+  .vbox .vb2{font-size:15px}
+  .lbox .ln{font-size:19px}
+  .cbox .cb1{font-size:16px}
+  .ipa{font-size:15px}
+  .panel .ipa{font-size:21px}
+  .panel{padding:16px}
+  .panel .pw{font-size:30px}
+  .panel .d{font-size:18px;line-height:1.65}
+  .panel .e{font-size:17px}
+  .vcard .vw{font-size:24px}
+  .vcard .d{font-size:16px}
+  .gnote{font-size:16px}
+  .gex{font-size:16px}
+}
+</style>
+</head>
+<body>
+<header>
+  <h1>Bootstrap Reader</h1>
+  <span class="tabs">
+    <button id="tabArt" class="on" onclick="show('art')">文章</button>
+    <button id="tabDict" onclick="show('dict')">词典</button>
+    <button id="tabVoc" onclick="show('voc')">词库</button>
+  </span>
+</header>
+<main>
+  <section id="pane-art">
+    <div class="row">
+      <input id="url" type="text" placeholder="粘贴文章网址（实验性，有的网站会拒绝）">
+      <button onclick="loadUrl()">载入</button>
+      <button onclick="loadSample()">示例</button>
+    </div>
+    <textarea id="paste" placeholder="或直接粘贴文章正文（推荐，任何来源都可用）"></textarea>
+    <div class="row"><button onclick="loadPaste()" style="width:100%">使用粘贴的正文</button></div>
+    <div id="meta" class="meta">词典读取中…</div>
+    <div id="art" class="article"></div>
+  </section>
+  <section id="pane-dict" style="display:none">
+    <input id="q" class="search" placeholder="搜索词典…">
+    <div id="dictmeta" class="meta"></div>
+    <div id="dictlist"></div>
+  </section>
+  <section id="pane-voc" style="display:none">
+    <div class="vochead" id="vochead">
+      <div class="vocbar" id="vocbar"></div>
+      <input id="vq" class="search" placeholder="查词：输入英文或中文…">
+      <div class="jumpbar" id="jumpbar">
+        <span>跳转至</span>
+        <input id="jump" type="number" inputmode="numeric" min="1" placeholder="序号">
+        <span id="jumptotal">/ 0</span>
+        <button id="jumpbtn" onclick="jumpTo()">跳转</button>
+      </div>
+      <div id="vmeta" class="meta"></div>
+      <div id="vocchips"></div>
+    </div>
+    <div id="vroot"></div>
+    <div id="vlist"></div>
+  </section>
+</main>
+<div class="backdrop" id="backdrop" onclick="closePanel()"></div>
+<div class="panel" id="panel" style="display:none">
+  <button class="x" onclick="closePanel()">关闭</button>
+  <div id="pbody"></div>
+</div>
+<script>
+var DICT = {};
+var DATA = [];
+var TOPICS = [];
+var GENLIST = [];
+var GENMAP = {};
+var SUBMETA = [];
+var SUBNAME = {};
+var GRP = '3k';
+var CAT = 'all';
+var VN = 80;
+var DICTERROR = false;
+var GENERROR = false;
+var GRAMMAR = [];
+function loadDict(){
+  fetch('dict.json').then(function(r){return r.json()}).then(function(j){
+    DICTERROR = false;
+    bootDict(j);
+  }).catch(function(e){
+    try{
+      bootDict(JSON.parse(decode(Android.dict())));
+      DICTERROR = false;
+    }catch(e2){
+      DICTERROR = true;
+      document.getElementById('meta').textContent =
+        'dict.json 读取失败：' + e;
+      if(document.getElementById('pane-voc').style.display !== 'none') renderVoc();
+    }
+  });
+}
+function loadGeneral(){
+  fetch('general.json').then(function(r){return r.json()}).then(function(j){
+    GENERROR = false;
+    bootGeneral(j);
+  }).catch(function(e){
+    try{
+      bootGeneral(JSON.parse(decode(Android.general())));
+      GENERROR = false;
+    }catch(e2){
+      GENERROR = true;
+      if(document.getElementById('pane-voc').style.display !== 'none') renderVoc();
+    }
+  });
+}
+function retryDict(){ DICTERROR = false; renderVoc(); loadDict(); }
+function retryGeneral(){ GENERROR = false; renderVoc(); loadGeneral(); }
+function loadGrammar(){
+  fetch('grammar.json').then(function(r){return r.json()}).then(function(j){
+    GRAMMAR = j.topics || [];
+    if(document.getElementById('pane-voc').style.display !== 'none') renderVoc();
+  }).catch(function(e){
+    try{
+      GRAMMAR = (JSON.parse(decode(Android.grammar())) || {}).topics || [];
+      if(document.getElementById('pane-voc').style.display !== 'none') renderVoc();
+    }catch(e2){ GRAMMAR = []; }
+  });
+}
+loadDict();
+loadGeneral();
+loadGrammar();
+
+function bootDict(j){
+  DATA = j.words || [];
+  TOPICS = j.topics || [];
+  DATA.forEach(function(e){DICT[e.w] = e});
+  document.getElementById('meta').textContent =
+    '词典已载入：牛津三千 ' + DATA.filter(function(e){return e.g===1}).length +
+    ' 词 + 一般词词库（载入中…）。点任意词看释义；棕色词=两本词典都没有。';
+  if((document.getElementById('q').value||'').trim()) renderDict();
+  loadSample();
+}
+function bootGeneral(j){
+  GENLIST = (j.words || []).slice();
+  GENMAP = {};
+  GENLIST.forEach(function(e){GENMAP[e.w] = e});
+  SUBMETA = j.subs || [];
+  SUBNAME = {};
+  SUBMETA.forEach(function(s){ SUBNAME[s.id] = s.name; });
+  document.getElementById('meta').textContent =
+    '词典已载入：牛津三千 ' + DATA.filter(function(e){return e.g===1}).length +
+    ' 词 + 一般词 ' + GENLIST.length + ' 词。';
+  if(document.getElementById('pane-voc').style.display !== 'none'){
+    renderVoc();
+  } else if((document.getElementById('vq').value||'').trim()){
+    renderVoc();
+  }
+}
+
+function show(p){
+  document.getElementById('tabArt').className = p==='art'?'on':'';
+  document.getElementById('tabDict').className = p==='dict'?'on':'';
+  document.getElementById('tabVoc').className = p==='voc'?'on':'';
+  document.getElementById('pane-art').style.display = p==='art'?'':'none';
+  document.getElementById('pane-dict').style.display = p==='dict'?'':'none';
+  document.getElementById('pane-voc').style.display = p==='voc'?'':'none';
+  if(p==='dict') renderDict();
+  if(p==='voc') renderVoc();
+}
+
+var SAMPLE = "The present perfect is the tense for things that happened before now and are true now. " +
+  "We make it with have or has and the past participle. " +
+  "A teacher makes other people learn. A student learns at school. " +
+  "We live in a house, and we read books at home. " +
+  "The price of food is high in the city, but the village is smaller and quieter.";
+
+function cleanHtml(html){
+  try{
+    var d = new DOMParser().parseFromString(html, 'text/html');
+    d.querySelectorAll('script,style,noscript,iframe,header,footer,nav,aside,form')
+      .forEach(function(n){n.remove()});
+    var parts = [];
+    d.querySelectorAll('p,h1,h2,h3,li,blockquote').forEach(function(n){
+      var t = (n.textContent||'').trim();
+      if(t.length > 40) parts.push(t);
+    });
+    if(parts.length) return parts.join('\n\n');
+  }catch(e){}
+  return html;
+}
+function decode(b64){
+  try{ return decodeURIComponent(escape(atob(b64))); }catch(e){ return atob(b64); }
+}
+window.onFetch = function(b64){
+  var t = decode(b64);
+  if(t.indexOf('ERROR:')===0){
+    document.getElementById('meta').textContent = '抓取失败：' + t;
+    return;
+  }
+  document.getElementById('meta').textContent =
+    '已抓取 ' + t.length + ' 字符（正文已自动提取）。';
+  renderText(cleanHtml(t));
+};
+function loadUrl(){
+  var u = document.getElementById('url').value.trim();
+  if(!u){ alert('先粘贴网址'); return; }
+  document.getElementById('meta').textContent = '抓取中…';
+  try{ Android.fetch(u); }
+  catch(e){ document.getElementById('meta').textContent = '抓取失败（需要真机/模拟器运行）。'; }
+}
+function loadPaste(){
+  var t = document.getElementById('paste').value.trim();
+  if(t) renderText(t);
+}
+function loadSample(){ renderText(SAMPLE); }
+
+function norm(w){
+  return (w||'').toLowerCase()
+    .replace(/^[^a-z]+|[^a-z]+$/g,'')
+    .replace(/['\u2019]s$/,'');
+}
+function stem(w, map){
+  map = map || DICT;
+  if(map[w]) return w;
+  if(!w || w.length <= 3) return '';
+  if(/(ss|us|is|as|ws|ys)$/.test(w)) return '';
+  if(/ies$/.test(w)) return w.slice(0, -3) + 'y';
+  if(/es$/.test(w)){
+    var e = w.slice(0, -2);
+    if(map[e]) return e;
+  }
+  return w.replace(/s$/,'');
+}
+function lookup(w){
+  var k = norm(w);
+  return DICT[k] || DICT[stem(k)] || DICT[stem(stem(k))] || null;
+}
+function lookupAll(w){
+  var k = norm(w);
+  var d = DICT[k] || DICT[stem(k)] || DICT[stem(stem(k))];
+  if(d) return d;
+  var g = GENMAP[k] || GENMAP[stem(k, GENMAP)] || GENMAP[stem(stem(k, GENMAP), GENMAP)];
+  return g || null;
+}
+/* ===== 外部图片搜索 ===== */
+var IMG_NOUN_CATS = {
+  animal:'animal photo', food:'food photo', object:'object photo',
+  body:'body part photo', place:'place photo'
+};
+var IMG_VERB_SUBS = {
+  sports:'sports technique', contact:'mechanical action', making:'mechanical action'
+};
+function imageSearchInfo(e){
+  if(!e) return {show:false, url:'', query:''};
+  var q = '';
+  if(e.ik){ q = e.ik; }
+  else if(e.pos === 'noun' && IMG_NOUN_CATS[e.t]){ q = e.w + ' ' + IMG_NOUN_CATS[e.t]; }
+  else if(e.pos === 'verb' && IMG_VERB_SUBS[e.s]){ q = e.w + ' ' + IMG_VERB_SUBS[e.s]; }
+  if(!q) return {show:false, url:'', query:''};
+  var url = 'https://image.baidu.com/search/index?tn=baiduimage&word=' +
+    encodeURIComponent(q).replace(/%20/g, '%20');
+  return {show:true, url:url, query:q};
+}
+function imageButtonHtml(w){
+  var info = imageSearchInfo(lookupAll(w));
+  if(!info.show) return '';
+  return '<button class="imgbtn" title="图片搜索：' + esc(info.query) +
+    '" aria-label="外部图片搜索" onclick="event.stopPropagation();openImageSearch(\'' +
+    jsq(w) + '\')">🖼️</button>';
+}
+function openImageSearch(w){
+  var info = imageSearchInfo(lookupAll(w));
+  if(!info.show) return;
+  try{
+    if(window.Android && Android.openUrl){ Android.openUrl(info.url); return; }
+  }catch(e){}
+  window.open(info.url, '_blank');
+}
+function esc(s){
+  return s.replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;');
+}
+function linkWords(text){
+  return String(text || '').replace(/[A-Za-z][A-Za-z'\u2019-]*/g, function(tok){
+    var k = norm(tok);
+    if(!k) return esc(tok);
+    return '<span class="wlink" onclick="event.stopPropagation();tapWord(\'' +
+      jsq(k) + '\',this)">' + esc(tok) + '</span>';
+  });
+}
+var LINK_TAP = {w:'', t:0};
+function tapWord(k, el){
+  var now = Date.now();
+  if(LINK_TAP.w === k && (now - LINK_TAP.t) < 450){
+    LINK_TAP.w = ''; LINK_TAP.t = 0;
+    showWord(k, true);
+    return;
+  }
+  LINK_TAP.w = k; LINK_TAP.t = now;
+  if(el){
+    el.classList.add('tap1');
+    setTimeout(function(){ el.classList.remove('tap1'); }, 220);
+  }
+}
+var PANEL_STACK = [];
+function panelBack(){
+  var w = PANEL_STACK.pop();
+  if(w) showWord(w, false);
+}
+function showWord(k, fromLink){
+  var prev = document.getElementById('pbody').getAttribute('data-w');
+  if(fromLink && prev && prev !== k){ PANEL_STACK.push(prev); }
+  var e = lookupAll(k);
+  var p = document.getElementById('pbody');
+  if(!e){
+    p.innerHTML = '<span class="pw">' + esc(k) + '</span> ' +
+      '<span class="badge">未收录</span>' +
+      '<div class="zh">牛津三千自举词典和开源一般词库都没有这个词。' +
+      '检查拼写，或试试它的原形。</div>';
+  } else {
+    var isGen = !!GENMAP[e.w];
+    p.innerHTML = '<span class="pw">' + esc(e.w) + '</span>' +
+      '<span class="badge">' + e.pos + '</span>' +
+      (isGen?'<span class="badge rich">一般词</span>':'') +
+      (e.p?'<span class="ipa">/' + esc(e.p) + '/</span>':'') +
+      imageButtonHtml(e.w) +
+      (e.zh?'<div class="zh">中文速记：' + esc(e.zh) + '</div>':'') +
+      '<div class="d">' + linkWords(e.def) + '</div>' +
+      '<div class="hint">提示：双击释义中的单词可继续查词</div>' +
+      (e.ex?'<div class="e">Example: “' + esc(e.ex) + '”</div>':'') +
+      (isGen?'<div class="zh">一般词使用开源英英释义（WordNet 近似牛津风格）。</div>':'');
+  }
+  p.setAttribute('data-w', e ? e.w : k);
+  if(PANEL_STACK.length){
+    p.insertAdjacentHTML('beforeend',
+      '<button class="x" style="margin-right:8px" onclick="panelBack()">← 上一个</button>');
+  }
+  document.getElementById('panel').style.display = 'block';
+  document.getElementById('backdrop').style.display = 'block';
+}
+function closePanel(){
+  document.getElementById('panel').style.display = 'none';
+  document.getElementById('backdrop').style.display = 'none';
+  PANEL_STACK = [];
+}
+
+function renderText(text){
+  var known = 0, total = 0, miss = {};
+  var out = '';
+  var re = /[A-Za-z][A-Za-z'\u2019\-]*|[^A-Za-z]+/g;
+  var m;
+  while((m = re.exec(text))){
+    var tok = m[0];
+    if(/^[A-Za-z]/.test(tok)){
+      total++;
+      var k = norm(tok);
+      if(lookupAll(k)){
+        known++;
+        out += '<span class="w" onclick="showWord(\'' + k + '\')">' + esc(tok) + '</span>';
+      } else {
+        miss[k] = 1;
+        out += '<span class="unknown" onclick="showWord(\'' + k + '\')">' + esc(tok) + '</span>';
+      }
+    } else { out += esc(tok); }
+  }
+  document.getElementById('art').innerHTML = out;
+  var keys = Object.keys(miss).sort();
+  var pct = total ? Math.round(known*100/total) : 0;
+  document.getElementById('meta').innerHTML =
+    '本页词形 ' + total + ' 个，词典可解释 ' + known + ' 个（' + pct + '%）。' +
+    (keys.length ? ' 未收录 ' + keys.length + ' 个：<b>' + esc(keys.slice(0,20).join(', ')) + '</b>' : '');
+}
+
+function renderDict(){
+  var raw = document.getElementById('q').value || '';
+  var q = raw.trim().toLowerCase();
+  var meta = document.getElementById('dictmeta');
+  var listEl = document.getElementById('dictlist');
+  if(!DATA || !DATA.length){
+    listEl.innerHTML = '';
+    meta.innerHTML = '<div class="msg">词典还在载入中，请稍后再搜或等页面提示“词典已载入”。</div>';
+    return;
+  }
+  if(!q){
+    meta.innerHTML = '输入英文单词或词组（也可输入中文查释义）；留空时浏览前 80 条。';
+  } else if(/[^a-z\s\-'\u2019\u4e00-\u9fff]/i.test(q)){
+    listEl.innerHTML = '';
+    meta.innerHTML = '<div class="msg">只能搜索英文字母或中文，不能包含数字、符号等内容。' +
+      '请检查输入后再试。</div>';
+    return;
+  }
+  var list = DATA.filter(function(e){
+    return e.w.indexOf(q)>-1 || (e.def||'').indexOf(q)>-1 || (e.zh||'').indexOf(q)>-1;
+  });
+  var glist = GENLIST.filter(function(e){
+    return e.w.indexOf(q)>-1 || (e.def||'').indexOf(q)>-1;
+  });
+  if(!list.length && !glist.length){
+    listEl.innerHTML = '';
+    var onlyEn = /^[a-z\s\-'\u2019]+$/.test(q);
+    meta.innerHTML = onlyEn
+      ? '<div class="msg">整本词典（三千词 ' + DATA.length + ' + 一般词 ' + GENLIST.length +
+        '）都没有收录 “' + esc(raw) + '”。<br>' +
+        '可能是拼写问题；词典收录的是单词原形，试试 “go” “tooth” 这类写法。</div>'
+      : '<div class="msg">没有找到包含 “' + esc(raw) + '” 的中文释义或词条。</div>';
+    return;
+  }
+  meta.innerHTML = '整本词典：三千词 ' + list.length + ' 条 · 一般词 ' + glist.length + ' 条' +
+    ((list.length > 80 || glist.length > 80) ? '，每类先显示前 80 条。' : '。');
+  listEl.innerHTML = list.slice(0,80).map(function(e){
+      var rich = e.ext && e.ext.senses ? '<span class="badge rich">多义</span>' : '';
+      var btn = e.ext && e.ext.senses
+        ? '<button class="exbtn" onclick="event.stopPropagation();toggleExt(this)">多义词详解 ▾</button>'
+        : '';
+      return '<div class="drow" onclick="showWord(\'' + jsq(e.w) + '\')"><b>' +
+        esc(e.w) + '</b> <span class="badge">' + e.pos + '</span>' + rich +
+        (e.p?'<span class="ipa">/' + esc(e.p) + '/</span>':'') +
+        (e.zh?'<span style="color:#7a7267;font-size:12px"> ' + esc(e.zh) + '</span>':'') +
+        '<div class="d">' + esc(e.def) + '</div>' + btn + '</div>';
+    }).join('') + glist.slice(0,80).map(function(e){
+      return '<div class="drow" onclick="showWord(\'' + jsq(e.w) + '\')"><b>' +
+        esc(e.w) + '</b> <span class="badge">' + e.pos + '</span>' +
+        '<span class="badge rich">一般词</span>' +
+        (e.p?'<span class="ipa">/' + esc(e.p) + '/</span>':'') +
+        '<div class="d">' + esc(e.def) + '</div></div>';
+    }).join('');
+}
+document.getElementById('q').addEventListener('input', renderDict);
+
+function jsq(s){
+  return String(s).replace(/\\/g,'\\\\').replace(/'/g,"\\'");
+}
+function toggleExt(btn){
+  var card = btn.closest('.drow');
+  if(!card) return;
+  if(card.classList.contains('open')){
+    var box = card.querySelector('.extbox');
+    if(box) box.remove();
+    card.classList.remove('open');
+    btn.textContent = '多义词详解 ▾';
+    return;
+  }
+  var word = btn.closest('.drow').querySelector('b').textContent;
+  var e = DICT[word];
+  if(!e || !e.ext) return;
+  var h = '';
+  if(e.ext.senses && e.ext.senses.length){
+    h += '<div class="extsec">多义项 · ' + e.ext.senses.length + '</div>';
+    h += e.ext.senses.map(function(s,i){
+      return '<div class="sense"><b>' + (i+1) + '.</b> ' + esc(s.pos || e.pos) +
+        (s.zh?'<span class="zhs">' + esc(s.zh) + '</span>':'') + ' ' + esc(s.def) +
+        (s.ex?'<i>例：' + esc(s.ex) + '</i>':'') + '</div>';
+    }).join('');
+  }
+  if(e.ext.phrases && e.ext.phrases.length){
+    h += '<div class="extsec">常用词组</div>';
+    h += e.ext.phrases.map(function(p){
+      return '<div class="phrase"><b>' + esc(p.p) + '</b>' +
+        (p.zh?'<span class="zhs">' + esc(p.zh) + '</span>':'') +
+        '<div>' + esc(p.def) + '</div>' +
+        (p.ex?'<span class="pex">例：' + esc(p.ex) + '</span>':'') + '</div>';
+    }).join('');
+  }
+  if(!h) return;
+  btn.insertAdjacentHTML('beforebegin', '<div class="extbox">' + h + '</div>');
+  card.classList.add('open');
+  btn.textContent = '收起 ▴';
+}
+
+var SCREEN = 'home';
+var VGRP = null;
+var LAYER = 'all';
+var VCAT = 'all';
+var SUB = 'all';
+var FBAND = 'all';
+var VN = 80;
+var LGROUPS = [
+  {id:'l1', name:'入门基础', from:0, to:4, desc:'第 0–4 层 · 公理词与最常用词'},
+  {id:'l2', name:'常用扩展', from:5, to:9, desc:'第 5–9 层 · 生活高频词'},
+  {id:'l3', name:'生活进阶', from:10, to:14, desc:'第 10–14 层 · 名词动词大推进'},
+  {id:'l4', name:'社会抽象', from:15, to:19, desc:'第 15–19 层 · 社会与抽象词'},
+  {id:'l5', name:'高频补全', from:20, to:24, desc:'第 20–24 层 · 代词副词收尾'},
+  {id:'l6', name:'高阶收尾', from:25, to:29, desc:'第 25–29 层 · B1/B2 抽象词'}
+];
+
+function lgOf(l){
+  for(var i=0;i<LGROUPS.length;i++){
+    if(l>=LGROUPS[i].from && l<=LGROUPS[i].to) return LGROUPS[i].id;
+  }
+  return 'l6';
+}
+function counts3kTotal(){
+  var n = 0;
+  DATA.forEach(function(e){ if(e.g===1) n++; });
+  return n;
+}
+function catName(id){
+  for(var i=0;i<TOPICS.length;i++){
+    if(TOPICS[i].id===id) return TOPICS[i].name;
+  }
+  return id;
+}
+function goHome(){ SCREEN='home'; VGRP=null; LAYER='all'; VCAT='all'; FBAND='all'; VN=80; renderVoc(); }
+function open3k(){ SCREEN='3klayers'; VGRP='3k'; LAYER='all'; VCAT='all'; FBAND='all'; VN=80; renderVoc(); }
+function openGen(){ SCREEN='gencats'; VGRP='gen'; VCAT='all'; SUB='all'; FBAND='all'; VN=80; renderVoc(); }
+function pickGenCat(id){ SCREEN='gensubs'; VCAT=id; SUB='all'; FBAND='all'; VN=80; renderVoc(); }
+function pickSub(id){ SUB=id; FBAND='all'; VN=80; renderVoc(); }
+function pickLayer(id){ SCREEN='3kcats'; LAYER=id; VCAT='all'; FBAND='all'; VN=80; renderVoc(); }
+function pickCat(id){
+  if(VCAT===id) id='all';
+  VCAT=id;
+  FBAND='all';
+  VN=80;
+  renderVoc();
+}
+function setBand(b){ FBAND=b; VN=80; renderVoc(); }
+function backVoc(){
+  if(SCREEN==='gensubs'){ SCREEN='gencats'; VCAT='all'; SUB='all'; }
+  else if(SCREEN==='3kcats'){ SCREEN='3klayers'; LAYER='all'; VCAT='all'; }
+  else { goHome(); return; }
+  FBAND='all';
+  VN=80;
+  renderVoc();
+}
+function moreVoc(){ VN += 150; renderVoc(); }
+
+function matchEntry(e, q){
+  return e.w.indexOf(q)>-1 || (e.def||'').indexOf(q)>-1 || (e.zh||'').indexOf(q)>-1;
+}
+function rowHtml(e, tag){
+  return '<div class="vrow" onclick="showWord(\'' + jsq(e.w) + '\')"><b>' +
+    esc(e.w) + '</b> <span class="badge">' + e.pos + '</span>' +
+    (tag?'<span class="badge rich">' + esc(tag) + '</span>':'') +
+    (e.p?'<span class="ipa">/' + esc(e.p) + '/</span>':'') +
+    imageButtonHtml(e.w) +
+    (e.zh?'<span style="color:#9a8b6f;font-size:12px"> ' + esc(e.zh) + '</span>':'') +
+    '<div class="d">' + esc(e.def) + '</div></div>';
+}
+function fillList(arr, label){
+  var listEl = document.getElementById('vlist');
+  var meta = document.getElementById('vmeta');
+  if(!arr.length){
+    listEl.innerHTML = '';
+    meta.innerHTML = '<div class="msg">' + label + '里没有匹配的词。</div>';
+    return;
+  }
+  var cur = arr;
+  var chips = '';
+  var bandName = '';
+  if(arr.length > 800){
+    var high = arr.slice(0, 500);
+    var mid = arr.slice(500, 2000);
+    var low = arr.slice(2000);
+    var bm = {h:high, m:mid, l:low};
+    cur = bm[FBAND==='m'?'m':(FBAND==='l'?'l':'h')];
+    bandName = FBAND==='m'?'中频段':(FBAND==='l'?'低频段':'高频段');
+    chips = '<div class="chips">' +
+      '<button class="chip' + (FBAND==='h'||FBAND==='all'?' on':'') + '" onclick="setBand(\'h\')">高频 ' + high.length + '</button>' +
+      '<button class="chip' + (FBAND==='m'?' on':'') + '" onclick="setBand(\'m\')">中频 ' + mid.length + '</button>' +
+      '<button class="chip' + (FBAND==='l'?' on':'') + '" onclick="setBand(\'l\')">低频 ' + low.length + '</button></div>';
+  }
+  meta.innerHTML = label + ' · 共 ' + arr.length + ' 词，按词频从高到低' +
+    (arr.length > 800 ? '；已按词频分 高/中/低 三段' : '') + '。';
+  listEl.innerHTML = chips + cur.slice(0, VN).map(function(e){
+    return rowHtml(e, null);
+  }).join('');
+  if(cur.length > VN){
+    listEl.innerHTML += '<button class="vmore" onclick="moreVoc()">继续加载' +
+      (bandName?'（' + bandName + '）':'') + '（还剩 ' + (cur.length - VN) + ' 词）</button>';
+  }
+}
+
+function renderVoc(){
+  var raw = document.getElementById('vq').value || '';
+  var q = raw.trim().toLowerCase();
+  var meta = document.getElementById('vmeta');
+  var root = document.getElementById('vroot');
+  var listEl = document.getElementById('vlist');
+  var onlyEn = /^[a-z\s\-'\u2019]+$/.test(q);
+  if(!DATA.length || (VGRP==='gen' && !GENLIST.length)){
+    root.innerHTML = '';
+    listEl.innerHTML = '';
+    meta.innerHTML = '<div class="msg">词库还在载入中（一般词库较大，请稍候）…</div>';
+    return;
+  }
+  if(q && !onlyEn && !/[\u4e00-\u9fff]/.test(q)){
+    root.innerHTML = '';
+    listEl.innerHTML = '';
+    meta.innerHTML = '<div class="msg">只能搜索英文字母或中文。</div>';
+    return;
+  }
+
+  if(SCREEN==='home'){
+    if(!q){
+      root.innerHTML =
+        '<button class="back" onclick="goHome()">词库</button>' +
+        '<div class="vhome">' +
+        '<div class="vbox" onclick="open3k()"><div class="vb1">牛津 3000</div>' +
+        '<div class="vb2">全部采用纯英语自举释义 + 例句；点进去先选“层”，层内按语义范畴与词频阅读。</div>' +
+        '<span class="vb3">' + counts3kTotal() + ' 词 · 分层浏览</span></div>' +
+        '<div class="vbox" onclick="openGen()"><div class="vb1">一般词</div>' +
+        '<div class="vb2">开源英英释义（WordNet 全量），覆盖常见词与词组；点进去按语义范畴选择。</div>' +
+        '<span class="vb3">' + GENLIST.length + ' 词 · 范畴浏览</span></div></div>';
+      listEl.innerHTML = '';
+      meta.innerHTML = '输入英文/中文可直接全库查词；或点上方词库框进入浏览。';
+      return;
+    }
+    var a1 = DATA.filter(function(e){ return e.g===1 && matchEntry(e, q); }).slice(0, 300);
+    var a2 = GENLIST.filter(function(e){ return matchEntry(e, q); }).slice(0, 300);
+    root.innerHTML = '<button class="back" onclick="goHome()">词库</button>';
+    listEl.innerHTML =
+      a1.map(function(e){ return rowHtml(e, '3000'); }).join('') +
+      a2.map(function(e){ return rowHtml(e, '一般'); }).join('');
+    if(!a1.length && !a2.length){
+      listEl.innerHTML = '';
+      meta.innerHTML = '<div class="msg">全词库（牛津 3000 + 一般词）都没有找到 “' + esc(raw) + '”。</div>';
+    } else {
+      meta.innerHTML = '全词库搜索 “' + esc(raw) + '”：三千词 ' + a1.length +
+        ' 条 · 一般词 ' + a2.length + ' 条（各显示前 300）。';
+    }
+    return;
+  }
+
+  if(VGRP==='3k'){
+    if(SCREEN==='3klayers'){
+      var lh = '<button class="back" onclick="goHome()">← 词库</button>' +
+        '<div class="subtitle">牛津 3000 · 选择层（已合并成 6 层）：</div>';
+      lh += LGROUPS.map(function(g){
+        var n = 0;
+        DATA.forEach(function(e){
+          if(e.g===1 && e.l>=g.from && e.l<=g.to) n++;
+        });
+        return '<div class="lbox" onclick="pickLayer(\'' + g.id + '\')"><span class="ln">' +
+          g.name + '</span><span class="lr">' + g.desc + ' · ' + n + ' 词</span></div>';
+      }).join('');
+      root.innerHTML = lh;
+      if(!q){ listEl.innerHTML=''; meta.innerHTML='点一个层进入，层内可按范畴筛选并下滑阅读。'; return; }
+      var lq = DATA.filter(function(e){
+        return e.g===1 && matchEntry(e, q);
+      });
+      fillList(lq, '牛津 3000 全层搜索');
+      return;
+    }
+    // 3kcats
+    var lg = null;
+    for(var i=0;i<LGROUPS.length;i++){ if(LGROUPS[i].id===LAYER) lg=LGROUPS[i]; }
+    var layerTotal = 0;
+    DATA.forEach(function(e){
+      if(e.g===1 && e.l>=lg.from && e.l<=lg.to) layerTotal++;
+    });
+    var base = DATA.filter(function(e){
+      return e.g===1 && e.l>=lg.from && e.l<=lg.to &&
+        (VCAT==='all' || e.t===VCAT);
+    });
+    var counts = {};
+    DATA.forEach(function(e){
+      if(e.g===1 && e.l>=lg.from && e.l<=lg.to) counts[e.t] = (counts[e.t]||0)+1;
+    });
+    var ch = '<div class="chips"><button class="chip' + (VCAT==='all'?' on':'') +
+      '" onclick="pickCat(\'all\')">全部 ' + layerTotal + '</button>';
+    TOPICS.forEach(function(t){
+      if(!counts[t.id]) return;
+      ch += '<button class="chip' + (VCAT===t.id?' on':'') + '" onclick="pickCat(\'' + t.id + '\')">' +
+        esc(t.name) + ' ' + counts[t.id] + '</button>';
+    });
+    ch += '</div>';
+    root.innerHTML = '<button class="back" onclick="backVoc()">← 选层</button>' +
+      '<div class="subtitle">' + lg.name + ' · ' + lg.desc + '</div>' + ch;
+    var arr = base;
+    if(q) arr = arr.filter(function(e){ return matchEntry(e, q); });
+    fillList(arr, '牛津 3000 · ' + lg.name + (VCAT!=='all' ? ' · ' + catName(VCAT) : ' · 全部'));
+    return;
+  }
+
+  // 一般词：大范畴框 → 小情景框 → 词表
+  if(SCREEN==='gencats'){
+    var gcounts = {};
+    GENLIST.forEach(function(e){ gcounts[e.t] = (gcounts[e.t]||0)+1; });
+    var grid = '<button class="back" onclick="goHome()">← 词库</button>' +
+      '<div class="subtitle">一般词 · 先选大范畴（共 ' + GENLIST.length + ' 词）：</div>' +
+      '<div class="catgrid">';
+    TOPICS.forEach(function(t){
+      if(!gcounts[t.id]) return;
+      grid += '<div class="cbox" onclick="pickGenCat(\'' + t.id + '\')"><div class="cb1">' +
+        esc(t.name) + '</div><div class="cb2">' + gcounts[t.id] + ' 词</div></div>';
+    });
+    grid += '</div>';
+    root.innerHTML = grid;
+    if(!q){
+      listEl.innerHTML = '';
+      meta.innerHTML = '点一个大范畴，再选其中的小情景；或直接输入搜索。';
+      return;
+    }
+    var gall = GENLIST.filter(function(e){ return matchEntry(e, q); });
+    fillList(gall, '一般词全库搜索');
+  } else if(SCREEN==='gensubs'){
+    var sc = {};
+    GENLIST.forEach(function(e){
+      if(e.t===VCAT) sc[e.s] = (sc[e.s]||0)+1;
+    });
+    var subAll = 0;
+    for(var sk in sc) subAll += sc[sk];
+    var g2 = '<button class="back" onclick="backVoc()">← 大范畴</button>' +
+      '<div class="subtitle">一般词 · ' + catName(VCAT) + '（' + subAll +
+      ' 词）· 选择小情景：</div>';
+    g2 += '<div class="lbox" onclick="pickSub(\'all\')"><span class="ln">全部 ' +
+      catName(VCAT) + '</span><span class="lr">' + subAll + ' 词</span></div>' +
+      '<div class="catgrid">';
+    var sid;
+    for(sid in sc){
+      if(!sc.hasOwnProperty(sid)) continue;
+      g2 += '<div class="cbox" onclick="pickSub(\'' + sid + '\')"><div class="cb1">' +
+        esc(SUBNAME[sid] || sid) + '</div><div class="cb2">' + sc[sid] + ' 词</div></div>';
+    }
+    g2 += '</div>';
+    root.innerHTML = g2;
+    if(!q && SUB==='all'){
+      listEl.innerHTML = '';
+      meta.innerHTML = '点一个小情景，或点“全部 ' + catName(VCAT) + '”。';
+      return;
+    }
+    var gsub = GENLIST.filter(function(e){
+      return e.t===VCAT && (SUB==='all' || e.s===SUB) && (!q || matchEntry(e, q));
+    });
+    fillList(gsub, '一般词 · ' + catName(VCAT) +
+      (SUB!=='all' ? ' · ' + (SUBNAME[SUB] || SUB) : ' · 全部') +
+      (q ? ' · 搜索“' + raw + '”' : ''));
+  }
+}
+document.getElementById('vq').addEventListener('input', function(){ VN = 80; FBAND='all'; renderVoc(); });
+
+/* ================= 词库 v1.0：层级导航 + 固定头部 + 状态与手势 ================= */
+var SCREEN = 'home';
+var VGRP = null;
+var LAYER = 'all';
+var VCAT = 'all';
+var SUB = 'all';
+var FBAND = 'all';
+var VN = 80;
+var VSTACK = [];
+var CHIPOPEN = false;
+var GRAMOPEN = {};
+var JUMP_TOTAL = 0;
+var LGROUPS = [
+  {id:'g0', name:'语法基础', ranges:[[1,2]],
+   desc:'第 1–2 层 · 词性、句子结构与语法知识（自带例句）'},
+  {id:'l1', name:'入门基础', ranges:[[0,0],[3,5]],
+   desc:'第 0、3–5 层 · 公理词与最常用词'},
+  {id:'l2', name:'常用扩展', ranges:[[6,10]], desc:'第 6–10 层 · 生活高频词'},
+  {id:'l3', name:'生活进阶', ranges:[[11,15]], desc:'第 11–15 层 · 名词动词大推进'},
+  {id:'l4', name:'社会抽象', ranges:[[16,20]], desc:'第 16–20 层 · 社会与抽象词'},
+  {id:'l5', name:'高频收尾', ranges:[[21,29]], desc:'第 21–29 层 · B1/B2 与收尾'}
+];
+
+function inRanges(l, g){
+  for(var i=0;i<g.ranges.length;i++){
+    if(l>=g.ranges[i][0] && l<=g.ranges[i][1]) return true;
+  }
+  return false;
+}
+function isGrammar(e){ return e.l===1 || e.l===2; }
+function threeLayerTotal(){
+  var n=0;
+  DATA.forEach(function(e){ if(e.l!==undefined) n++; });
+  return n;
+}
+function counts3kTotal(){ return threeLayerTotal(); }
+function catName(id){
+  for(var i=0;i<TOPICS.length;i++){ if(TOPICS[i].id===id) return TOPICS[i].name; }
+  return id;
+}
+function setHeadVar(){
+  var h = document.querySelector('header').offsetHeight || 52;
+  document.documentElement.style.setProperty('--hhead', h + 'px');
+}
+function snapshot(){
+  return {SCREEN:SCREEN, VGRP:VGRP, LAYER:LAYER, VCAT:VCAT, SUB:SUB,
+          q:document.getElementById('vq').value || '', y:window.scrollY || 0};
+}
+function pushVoc(){ VSTACK.push(snapshot()); }
+function applyState(s){
+  SCREEN=s.SCREEN; VGRP=s.VGRP; LAYER=s.LAYER; VCAT=s.VCAT; SUB=s.SUB;
+  FBAND='all'; VN=80;
+  document.getElementById('vq').value = s.q || '';
+  renderVoc();
+  var y = s.y || 0;
+  requestAnimationFrame(function(){ window.scrollTo(0, y); });
+}
+function popVoc(){
+  var panel = document.getElementById('panel');
+  if(panel && panel.style.display === 'block'){ closePanel(); return true; }
+  if(VSTACK.length){ applyState(VSTACK.pop()); return true; }
+  if(SCREEN !== 'home'){ goHome(); return true; }
+  return false;
+}
+function goHome(){
+  VSTACK = [];
+  SCREEN='home'; VGRP=null; LAYER='all'; VCAT='all'; SUB='all'; FBAND='all'; VN=80;
+  document.getElementById('vq').value='';
+  renderVoc();
+  requestAnimationFrame(function(){ window.scrollTo(0,0); });
+}
+function open3k(){
+  pushVoc(); SCREEN='3klayers'; VGRP='3k'; LAYER='all'; VCAT='all';
+  FBAND='all'; VN=80; renderVoc(); window.scrollTo(0,0);
+}
+function openGen(){
+  pushVoc(); SCREEN='gencats'; VGRP='gen'; VCAT='all'; SUB='all';
+  FBAND='all'; VN=80; renderVoc(); window.scrollTo(0,0);
+}
+function pickLayer(id){
+  pushVoc(); SCREEN='3kcats'; LAYER=id; VCAT='all'; FBAND='all'; VN=80;
+  CHIPOPEN = false; GRAMOPEN = {};
+  renderVoc(); window.scrollTo(0,0);
+}
+function pickGenCat(id){
+  pushVoc(); SCREEN='gensubs'; VCAT=id; SUB='all'; FBAND='all'; VN=80;
+  renderVoc(); window.scrollTo(0,0);
+}
+function pickSub(id){
+  pushVoc(); SUB=id; FBAND='all'; VN=80; renderVoc(); window.scrollTo(0,0);
+  var on = document.querySelector('.subchip.on');
+  if(on && on.scrollIntoView){
+    try{ on.scrollIntoView({inline:'center', block:'nearest', behavior:'smooth'}); }catch(e){}
+  }
+}
+function pickCat(id){ /* 语法/词频标签：不推栈，仅当前视图过滤 */
+  if(VCAT===id && id!=='all') id='all';
+  VCAT=id; FBAND='all'; VN=80; CHIPOPEN=false; renderVoc();
+}
+function toggleChips(){ CHIPOPEN = !CHIPOPEN; renderVoc(); }
+function toggleGrammar(id){
+  var listEl = document.getElementById('vlist');
+  var y = listEl ? listEl.scrollTop : 0;
+  GRAMOPEN[id] = !GRAMOPEN[id];
+  renderVoc();
+  var nl = document.getElementById('vlist');
+  if(nl) nl.scrollTop = y;
+}
+function setBand(b){ FBAND=b; VN=80; renderVoc(); }
+function moreVoc(){ VN += 150; renderVoc(); }
+function backVoc(){ popVoc(); }
+function showJump(show){
+  var bar = document.getElementById('jumpbar');
+  if(bar) bar.style.display = show ? 'flex' : 'none';
+}
+function resetJump(total){
+  var i = document.getElementById('jump');
+  var t = document.getElementById('jumptotal');
+  if(!i || !t) return;
+  i.max = total;
+  i.value = total > 0 ? 1 : '';
+  t.textContent = ' / ' + total;
+  JUMP_TOTAL = total;
+}
+function jumpTo2(v){
+  var listEl = document.getElementById('vlist');
+  var cards = listEl.querySelectorAll('.vcard');
+  var card = cards[v-1];
+  if(!card) return;
+  var delta = card.getBoundingClientRect().top - listEl.getBoundingClientRect().top;
+  listEl.scrollTo({top: Math.max(0, listEl.scrollTop + delta - 8), behavior:'smooth'});
+  document.getElementById('jump').value = v;
+}
+function jumpTo(){
+  var el = document.getElementById('jump');
+  var v = parseInt(el.value || '0', 10);
+  if(!v) return;
+  var listEl = document.getElementById('vlist');
+  var cards = listEl.querySelectorAll('.vcard');
+  var total = JUMP_TOTAL || cards.length || v;
+  v = Math.min(Math.max(v, 1), total);
+  if(v > cards.length){
+    VN = Math.ceil(v / 150) * 150;
+    renderVoc();
+    requestAnimationFrame(function(){
+      requestAnimationFrame(function(){ jumpTo2(v); });
+    });
+    return;
+  }
+  jumpTo2(v);
+}
+function onListScroll(){
+  var el = document.getElementById('jump');
+  if(!el || document.activeElement === el) return;
+  var listEl = document.getElementById('vlist');
+  var cards = listEl.querySelectorAll('.vcard');
+  if(!cards.length) return;
+  var top = listEl.scrollTop;
+  for(var n=0; n<cards.length; n++){
+    if(cards[n].offsetTop + cards[n].offsetHeight > top + 4){
+      if(el.value !== String(n+1)) el.value = n+1;
+      return;
+    }
+  }
+}
+function matchEntry(e, q){
+  return e.w.indexOf(q)>-1 || (e.def||'').indexOf(q)>-1 || (e.zh||'').indexOf(q)>-1;
+}
+function rowHtml(e, tag){
+  return '<div class="vrow" onclick="showWord(\'' + jsq(e.w) + '\')"><b>' +
+    esc(e.w) + '</b> <span class="badge">' + e.pos + '</span>' +
+    (tag?'<span class="badge rich">' + esc(tag) + '</span>':'') +
+    (e.p?'<span class="ipa">/' + esc(e.p) + '/</span>':'') +
+    (e.zh?'<span style="color:#9a8b6f;font-size:12px"> ' + esc(e.zh) + '</span>':'') +
+    '<div class="d">' + esc(e.def) + '</div></div>';
+}
+function layerNote(e){
+  if(e.l===1 || e.l===2) return '语法 · 第' + e.l + ' 层';
+  if(e.l!==undefined) return '第' + e.l + ' 层';
+  return '一般词';
+}
+function vcardHtml(e, tag){
+  return '<div class="vcard"><div class="vtop"><span class="vw">' + esc(e.w) + '</span>' +
+    '<span class="badge">' + e.pos + '</span>' +
+    (tag?'<span class="badge rich">' + esc(tag) + '</span>':'') +
+    (e.p?'<span class="ipa">/' + esc(e.p) + '/</span>':'') +
+    imageButtonHtml(e.w) +
+    '<span class="layer">' + esc(layerNote(e)) + '</span></div>' +
+    (e.zh?'<div class="zh">' + esc(e.zh) + '</div>':'') +
+    '<div class="d">' + esc(e.def) + '</div>' +
+    (e.ex?'<div class="e">Example: “' + esc(e.ex) + '”</div>':'') +
+    '</div>';
+}
+function sizeAreas(){
+  var head = document.getElementById('vochead');
+  var root = document.getElementById('vroot');
+  var listEl = document.getElementById('vlist');
+  if(!head || !root || !listEl) return;
+  var H = Math.max(180, window.innerHeight - head.getBoundingClientRect().bottom - 6);
+  var rootHas = root.innerHTML.replace(/\s/g,'') !== '';
+  var listHas = listEl.innerHTML.replace(/\s/g,'') !== '';
+  if(rootHas && listHas){
+    root.style.overflowY = 'auto';
+    listEl.style.overflowY = 'auto';
+    var rootH = Math.min(root.scrollHeight, Math.max(150, Math.floor(H*0.45)));
+    root.style.maxHeight = rootH + 'px';
+    listEl.style.maxHeight = Math.max(120, H - rootH - 6) + 'px';
+  } else if(rootHas){
+    root.style.overflowY = 'auto';
+    root.style.maxHeight = H + 'px';
+    listEl.style.maxHeight = 'none';
+    listEl.style.overflowY = 'visible';
+  } else if(listHas){
+    listEl.style.overflowY = 'auto';
+    listEl.style.maxHeight = H + 'px';
+    root.style.maxHeight = 'none';
+    root.style.overflowY = 'visible';
+  } else {
+    root.style.maxHeight = 'none';
+    listEl.style.maxHeight = 'none';
+  }
+}
+function renderGrammar(q, raw){
+  var listEl = document.getElementById('vlist');
+  var meta = document.getElementById('vmeta');
+  var chips = document.getElementById('vocchips');
+  chips.className = ''; chips.innerHTML = '';
+  if(!GRAMMAR.length){
+    listEl.innerHTML = '<div class="state loading">语法讲解载入中…</div>';
+    meta.innerHTML = '';
+    sizeAreas();
+    return;
+  }
+  var topics = GRAMMAR.filter(function(t){
+    if(!q) return true;
+    if((t.title||'').toLowerCase().indexOf(q)>-1) return true;
+    if((t.note||'').toLowerCase().indexOf(q)>-1) return true;
+    return (t.words||[]).some(function(w){
+      return w.w.indexOf(q)>-1 || (w.def||'').indexOf(q)>-1;
+    });
+  });
+  if(!topics.length){
+    listEl.innerHTML = '<div class="state empty">语法基础里没有找到 “' + esc(raw) + '”。</div>';
+    meta.innerHTML = '';
+    sizeAreas();
+    return;
+  }
+  meta.innerHTML = '语法基础 · ' + GRAMMAR.length + ' 个知识点（讲解 + 例句 + 词汇卡片）';
+  listEl.innerHTML = topics.map(function(t){
+    var open = !!GRAMOPEN[t.id] || !!q;
+    var exs = t.examples || [];
+    var ws = (t.words || []).filter(function(w){
+      return !q || w.w.indexOf(q)>-1 || (w.def||'').indexOf(q)>-1;
+    });
+    return '<div class="gacc' + (open?' open':'') + '">' +
+      '<div class="ghead" onclick="toggleGrammar(\'' + t.id + '\')">' +
+      '<span class="arw">▶</span><span class="gt">' + esc(t.title) + '</span>' +
+      '<span class="gl">第 ' + t.layer + ' 层 · ' + (t.words||[]).length + ' 词</span></div>' +
+      '<div class="gbody">' +
+      (t.note?'<div class="gnote">' + esc(t.note) + '</div>':'') +
+      (exs.length?'<div class="gsec">Example Sentences</div>' +
+        exs.map(function(x){ return '<div class="gex">' + esc(x) + '</div>'; }).join(''):'') +
+      '<div class="gsec">相关词汇卡片</div>' +
+      ws.map(function(w){ return vcardHtml(w, '语法'); }).join('') +
+      '</div></div>';
+  }).join('');
+  sizeAreas();
+}
+function animateView(){
+  ['vroot','vlist'].forEach(function(id){
+    var el = document.getElementById(id);
+    if(!el) return;
+    el.classList.remove('view'); void el.offsetWidth; el.classList.add('view');
+  });
+  sizeAreas();
+}
+function renderVocBar(title){
+  var bar = document.getElementById('vocbar');
+  var h = '';
+  if(VSTACK.length) h += '<button class="back" onclick="popVoc()">← 返回</button>';
+  h += '<div class="vtitle">' + esc(title) + '</div>';
+  bar.innerHTML = h;
+}
+function fillList(arr, label, tagFn){
+  var listEl = document.getElementById('vlist');
+  var meta = document.getElementById('vmeta');
+  if(!arr.length){
+    listEl.innerHTML = '<div class="state empty">' + label + '里没有匹配的词或词组。</div>';
+    meta.innerHTML = '';
+    animateView();
+    return;
+  }
+  var cur = arr, chips = '', bandName = '';
+  if(arr.length > 800){
+    var high = arr.slice(0,500), mid = arr.slice(500,2000), low = arr.slice(2000);
+    cur = FBAND==='m' ? mid : (FBAND==='l' ? low : high);
+    bandName = FBAND==='m' ? '中频段' : (FBAND==='l' ? '低频段' : '高频段');
+    chips = '<div class="chips">' +
+      '<button class="chip' + (FBAND==='h'||FBAND==='all'?' on':'') + '" onclick="setBand(\'h\')">高频 ' + high.length + '</button>' +
+      '<button class="chip' + (FBAND==='m'?' on':'') + '" onclick="setBand(\'m\')">中频 ' + mid.length + '</button>' +
+      '<button class="chip' + (FBAND==='l'?' on':'') + '" onclick="setBand(\'l\')">低频 ' + low.length + '</button></div>';
+  }
+  meta.innerHTML = label + ' · 共 ' + arr.length + ' 词，按词频从高到低' +
+    (arr.length>800 ? '；已分 高/中/低 三段' : '') + '。';
+  listEl.innerHTML = chips + cur.slice(0,VN).map(function(e){
+    return vcardHtml(e, tagFn ? tagFn(e) : null);
+  }).join('');
+  if(cur.length > VN){
+    listEl.innerHTML += '<button class="vmore" onclick="moreVoc()">继续加载' +
+      (bandName?'（'+bandName+'）':'') + '（还剩 ' + (cur.length-VN) + ' 词）</button>';
+  }
+  showJump(true);
+  resetJump(cur.length);
+  animateView();
+}
+
+function renderVoc(){
+  var raw = document.getElementById('vq').value || '';
+  var q = raw.trim().toLowerCase();
+  var meta = document.getElementById('vmeta');
+  var root = document.getElementById('vroot');
+  var listEl = document.getElementById('vlist');
+  setHeadVar();
+  showJump(false);
+  var chipsEl = document.getElementById('vocchips');
+  chipsEl.className = ''; chipsEl.innerHTML = '';
+  var onlyEn = /^[a-z\s\-'\u2019]+$/.test(q);
+
+  if(DICTERROR){
+    renderVocBar('词库');
+    root.innerHTML = '<div class="state error">三千词词典载入失败。' +
+      '<br><button class="retry" onclick="retryDict()">重试</button></div>';
+    listEl.innerHTML=''; meta.innerHTML=''; animateView(); return;
+  }
+  if(!DATA.length){
+    renderVocBar('词库');
+    root.innerHTML = '<div class="state loading">词库载入中…</div>';
+    listEl.innerHTML=''; meta.innerHTML=''; animateView(); return;
+  }
+  if(GENERROR){
+    renderVocBar('词库');
+    root.innerHTML = '<div class="state error">一般词库载入失败。' +
+      '<br><button class="retry" onclick="retryGeneral()">重试</button></div>';
+    listEl.innerHTML=''; meta.innerHTML=''; animateView(); return;
+  }
+  if(q && !onlyEn && !/[\u4e00-\u9fff]/.test(q)){
+    renderVocBar('词库');
+    root.innerHTML=''; listEl.innerHTML='';
+    meta.innerHTML = '<div class="state empty">只能搜索英文字母或中文。</div>';
+    animateView(); return;
+  }
+
+  /* 全词典搜索：无论当前在哪一层/哪一类，都搜三千词 + 一般词 */
+  if(q){
+    var d1 = DATA.filter(function(e){ return matchEntry(e,q); }).slice(0, 300);
+    var g1 = GENLIST.filter(function(e){ return matchEntry(e,q); }).slice(0, 300);
+    renderVocBar('全词典搜索');
+    root.innerHTML = '';
+    if(!d1.length && !g1.length){
+      listEl.innerHTML = '<div class="state empty">整本词典（三千词 ' + DATA.length +
+        ' + 一般词 ' + GENLIST.length + '）都没有找到 “' + esc(raw) + '”。</div>';
+      meta.innerHTML = '';
+    } else {
+      listEl.innerHTML =
+        d1.map(function(e){ return vcardHtml(e, isGrammar(e) ? '语法' : '3000'); }).join('') +
+        g1.map(function(e){ return vcardHtml(e, '一般'); }).join('');
+      meta.innerHTML = '整本词典搜索 “' + esc(raw) + '”：三千词 ' + d1.length +
+        ' 条 · 一般词 ' + g1.length + ' 条（各显示前 300）。';
+      showJump(true);
+      resetJump(d1.length + g1.length);
+    }
+    animateView(); return;
+  }
+
+  if(SCREEN==='home'){
+    renderVocBar('词库');
+    if(!q){
+      root.innerHTML =
+        '<div class="vhome">' +
+        '<div class="vbox" onclick="open3k()"><div class="vb1">牛津 3000</div>' +
+        '<div class="vb2">纯英语自举释义 + 例句；包含语法层与全部词层。点进去先选层。</div>' +
+        '<span class="vb3">' + threeLayerTotal() + ' 词 · 六层导航</span></div>' +
+        '<div class="vbox" onclick="openGen()"><div class="vb1">一般词</div>' +
+        '<div class="vb2">开源英英释义（WordNet 全量），带音标；点进去按大范畴 → 小情景浏览。</div>' +
+        '<span class="vb3">' + GENLIST.length + ' 词 · 两级范畴</span></div></div>';
+      listEl.innerHTML='';
+      meta.innerHTML = '搜索框与分类导航吸顶；点分类进入详情，返回键/右滑可回上一级。';
+      animateView(); return;
+    }
+    var a1 = DATA.filter(function(e){ return matchEntry(e,q); }).slice(0,300);
+    var a2 = GENLIST.filter(function(e){ return matchEntry(e,q); }).slice(0,300);
+    root.innerHTML='';
+    listEl.innerHTML =
+      a1.map(function(e){ return rowHtml(e,'3000'); }).join('') +
+      a2.map(function(e){ return rowHtml(e,'一般'); }).join('');
+    if(!a1.length && !a2.length){
+      listEl.innerHTML = '<div class="state empty">全词库都没有找到 “' + esc(raw) + '”。</div>';
+      meta.innerHTML='';
+    } else {
+      meta.innerHTML = '全词库搜索 “' + esc(raw) + '”：三千词 ' + a1.length +
+        ' 条 · 一般词 ' + a2.length + ' 条（各显示前 300）。';
+    }
+    animateView(); return;
+  }
+
+  if(VGRP==='3k'){
+    if(SCREEN==='3klayers'){
+      renderVocBar('牛津 3000 · 选择层');
+      root.innerHTML = '<div class="subtitle">六层导航（语法层与其他层同级）：</div>' +
+        LGROUPS.map(function(g){
+          var n = 0;
+          DATA.forEach(function(e){ if(e.l!==undefined && inRanges(e.l,g)) n++; });
+          return '<div class="lbox" onclick="pickLayer(\'' + g.id + '\')"><span class="ln">' +
+            g.name + '</span><span class="lr">' + g.desc + ' · ' + n + ' 词</span></div>';
+        }).join('');
+      if(!q){ listEl.innerHTML=''; meta.innerHTML='点一层进入；详情页顶部固定返回、标题与搜索框。'; animateView(); return; }
+      fillList(DATA.filter(function(e){ return e.l!==undefined && matchEntry(e,q); }),
+               '三千词体系全层搜索');
+      return;
+    }
+    var lg=null;
+    for(var i=0;i<LGROUPS.length;i++){ if(LGROUPS[i].id===LAYER) lg=LGROUPS[i]; }
+    var layerTotal=0;
+    DATA.forEach(function(e){ if(e.l!==undefined && inRanges(e.l,lg)) layerTotal++; });
+    var base = DATA.filter(function(e){
+      return e.l!==undefined && inRanges(e.l,lg) && (VCAT==='all' || e.t===VCAT);
+    });
+    if(lg.id!=='g0'){ base = base.slice().sort(function(a,b){ return (a.r||0)-(b.r||0); }); }
+    var counts={};
+    DATA.forEach(function(e){
+      if(e.l!==undefined && inRanges(e.l,lg)) counts[e.t]=(counts[e.t]||0)+1;
+    });
+    renderVocBar(lg.name + ' · ' + (VCAT==='all'?'全部':catName(VCAT)));
+    if(lg.id==='g0'){ root.innerHTML=''; renderGrammar(q, raw); return; }
+    var ch='<div class="substrip"><button class="subchip' +
+      (VCAT==='all'?' on':'') + '" onclick="pickCat(\'all\')">' +
+      '<span class="sc1">全部</span><span class="sc2">' + layerTotal + ' 词</span></button>';
+    TOPICS.forEach(function(t){
+      if(!counts[t.id]) return;
+      ch += '<button class="subchip' + (VCAT===t.id?' on':'') +
+        '" onclick="pickCat(\'' + t.id + '\')"><span class="sc1">' + esc(t.name) +
+        '</span><span class="sc2">' + counts[t.id] + ' 词</span></button>';
+    });
+    ch += '</div>';
+    chipsEl.innerHTML = ch;
+    root.innerHTML = '';
+    var onC = document.querySelector('#vocchips .subchip.on');
+    if(onC && VCAT!=='all' && onC.scrollIntoView){
+      try{ onC.scrollIntoView({inline:'center', block:'nearest'}); }catch(e){}
+    }
+    var arr = base;
+    if(q) arr = arr.filter(function(e){ return matchEntry(e,q); });
+    fillList(arr, '三千词 · ' + lg.name + (VCAT!=='all' ? ' · ' + catName(VCAT) : ''),
+             function(e){ return isGrammar(e) ? '语法' : null; });
+    return;
+  }
+
+  if(SCREEN==='gencats'){
+    renderVocBar('一般词 · 选择大范畴');
+    var gcounts={};
+    GENLIST.forEach(function(e){ gcounts[e.t]=(gcounts[e.t]||0)+1; });
+    var grid='<div class="subtitle">共 ' + GENLIST.length + ' 词，先选大范畴：</div><div class="catgrid">';
+    TOPICS.forEach(function(t){
+      if(!gcounts[t.id]) return;
+      grid += '<div class="cbox" onclick="pickGenCat(\'' + t.id + '\')"><div class="cb1">' +
+        esc(t.name) + '</div><div class="cb2">' + gcounts[t.id] + ' 词</div></div>';
+    });
+    grid += '</div>';
+    root.innerHTML = grid;
+    if(!q){ listEl.innerHTML=''; meta.innerHTML='点大范畴进入，再选小情景；详情页顶部固定返回与搜索框。'; animateView(); return; }
+    fillList(GENLIST.filter(function(e){ return matchEntry(e,q); }), '一般词全库搜索');
+    return;
+  }
+
+  if(SCREEN==='gensubs'){
+    var sc={};
+    GENLIST.forEach(function(e){ if(e.t===VCAT) sc[e.s]=(sc[e.s]||0)+1; });
+    var subAll=0; for(var sk in sc){ subAll += sc[sk]; }
+    renderVocBar(catName(VCAT) + (SUB!=='all' ? ' · ' + (SUBNAME[SUB]||SUB) : ' · 选择小情景'));
+    var g2 = '<div class="substrip" id="substrip">' +
+      '<button class="subchip' + (SUB==='all'?' on':'') + '" onclick="pickSub(\'all\')">' +
+      '<span class="sc1">全部</span><span class="sc2">' + subAll + ' 词</span></button>';
+    var sid;
+    for(sid in sc){
+      if(!sc.hasOwnProperty(sid)) continue;
+      g2 += '<button class="subchip' + (SUB===sid?' on':'') + '" onclick="pickSub(\'' + sid + '\')">' +
+        '<span class="sc1">' + esc(SUBNAME[sid]||sid) + '</span>' +
+        '<span class="sc2">' + sc[sid] + ' 词</span></button>';
+    }
+    g2 += '</div>';
+    root.innerHTML = g2;
+    var onChip = document.querySelector('#substrip .subchip.on');
+    if(onChip && SUB!=='all' && onChip.scrollIntoView){
+      try{ onChip.scrollIntoView({inline:'center', block:'nearest'}); }catch(e){}
+    }
+    if(!q && SUB==='all'){ listEl.innerHTML=''; meta.innerHTML='点小情景展开词表；词表按词频排序。'; animateView(); return; }
+    var gsub = GENLIST.filter(function(e){
+      return e.t===VCAT && (SUB==='all' || e.s===SUB) && (!q || matchEntry(e,q));
+    });
+    fillList(gsub, '一般词 · ' + catName(VCAT) + (SUB!=='all' ? ' · ' + (SUBNAME[SUB]||SUB) : ''));
+    return;
+  }
+
+  renderVocBar('词库');
+  root.innerHTML=''; listEl.innerHTML=''; meta.innerHTML='';
+}
+
+window.onAndroidBack = function(){
+  try{
+    var panel = document.getElementById('panel');
+    if(panel && panel.style.display === 'block'){ closePanel(); return true; }
+    if(popVoc()) return true;
+    return false;
+  }catch(e){ return false; }
+};
+
+(function(){
+  var sx=null, sy=null;
+  document.addEventListener('touchstart', function(e){
+    if(e.touches.length!==1){ sx=null; return; }
+    var t=e.touches[0];
+    if(t.clientX<=26){ sx=t.clientX; sy=t.clientY; } else { sx=null; }
+  }, {passive:true});
+  document.addEventListener('touchend', function(e){
+    if(sx===null) return;
+    var t=e.changedTouches[0];
+    if(t.clientX-sx>60 && Math.abs(t.clientY-sy)<80){ popVoc(); }
+    sx=null;
+  }, {passive:true});
+})();
+window.addEventListener('load', setHeadVar);
+window.addEventListener('resize', setHeadVar);
+window.addEventListener('orientationchange', setHeadVar);
+(function(){
+  var listEl = document.getElementById('vlist');
+  if(listEl) listEl.addEventListener('scroll', onListScroll, {passive:true});
+  var j = document.getElementById('jump');
+  if(j) j.addEventListener('keydown', function(e){
+    if(e.key === 'Enter'){ e.preventDefault(); jumpTo(); }
+  });
+})();
+</script>
+</body>
+</html>

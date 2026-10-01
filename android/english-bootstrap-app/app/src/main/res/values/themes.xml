@@ -1,0 +1,6 @@
+<resources>
+    <style name="Theme.Bootstrap" parent="android:style/Theme.Material.Light.NoActionBar">
+        <item name="android:statusBarColor">#1f6f6b</item>
+        <item name="android:navigationBarColor">#ffffff</item>
+    </style>
+</resources>

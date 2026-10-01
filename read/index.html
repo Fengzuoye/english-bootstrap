@@ -1,0 +1,178 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>English Bootstrap · 英语自举</title>
+<style>
+:root{
+  --bg:#f7f5f0; --card:#fffdf9; --ink:#2d2a26; --muted:#7a7267;
+  --line:#e6dfd3; --accent:#1f6f6b; --accent-soft:#e4f0ee;
+}
+*{box-sizing:border-box}
+body{margin:0;background:var(--bg);color:var(--ink);
+  font-family:"Segoe UI","PingFang SC","Microsoft YaHei",system-ui,sans-serif;
+  line-height:1.8;}
+.wrap{max-width:900px;margin:0 auto;padding:36px 22px 90px;}
+h1{font-size:1.55rem;margin:6px 0 6px;letter-spacing:.01em;}
+.subtitle{color:var(--muted);margin:0 0 26px;}
+nav.top{display:flex;gap:10px;flex-wrap:wrap;margin-bottom:24px;}
+nav.top a{color:var(--accent);text-decoration:none;border:1px solid var(--line);
+  background:var(--card);padding:5px 14px;border-radius:999px;font-size:.88rem;}
+.note{background:#fff8e8;border:1px solid #ecd9a8;border-radius:12px;
+  padding:14px 18px;font-size:.93rem;margin:18px 0;color:#5c4f33;}
+.controls{position:sticky;top:0;background:var(--bg);padding:10px 0 12px;z-index:5;
+  display:flex;gap:10px;flex-wrap:wrap;align-items:center;border-bottom:1px solid var(--line);}
+.controls input[type=search]{flex:1;min-width:200px;padding:8px 12px;
+  border:1px solid var(--line);border-radius:9px;background:var(--card);
+  font-size:.95rem;font-family:inherit;}
+.controls select{padding:8px 10px;border:1px solid var(--line);border-radius:9px;
+  background:var(--card);font-size:.9rem;font-family:inherit;}
+.controls label{font-size:.85rem;color:var(--muted);display:flex;gap:6px;align-items:center;
+  white-space:nowrap;cursor:pointer;}
+.cat{margin-top:36px;}
+.cat h2{font-size:1.12rem;border-left:4px solid var(--accent);padding-left:10px;
+  margin:0 0 14px;}
+.cat h2 .count{color:var(--muted);font-weight:normal;font-size:.85rem;}
+.grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(230px,1fr));gap:12px;}
+.chip{background:var(--card);border:1px solid var(--line);border-radius:12px;
+  padding:12px 15px;box-shadow:0 1px 2px rgba(0,0,0,.04);}
+.chip .word{font-family:Georgia,"Times New Roman",serif;font-size:1.3rem;}
+.chip .gloss{color:var(--muted);font-size:.85rem;margin-top:2px;}
+.badge{display:inline-block;font-size:.68rem;letter-spacing:.04em;padding:2px 9px;
+  border-radius:999px;color:#fff;vertical-align:middle;font-family:inherit;}
+.badge.noun{background:#2f6f6b}.badge.verb{background:#b3541e}
+.badge.adjective{background:#8a5a9b}.badge.adverb{background:#4a6fa5}
+.badge.pronoun{background:#7a7a52}.badge.article{background:#6b7280}
+.badge.number{background:#2c7a3d}.badge.determiner{background:#a05a7c}
+.badge.preposition{background:#5a7a9c}.badge.conjunction{background:#8a6d3b}
+.badge.modal{background:#7a5a8a}.badge.interjection{background:#9c6b3c}
+.card{background:var(--card);border:1px solid var(--line);border-radius:14px;
+  padding:20px 24px;margin:18px 0;box-shadow:0 1px 3px rgba(0,0,0,.05);}
+.card .entry-head{display:flex;justify-content:space-between;align-items:center;}
+.card .num{color:var(--muted);font-size:.8rem;}
+.card .word{font-family:Georgia,"Times New Roman",serif;font-size:1.55rem;
+  margin:8px 0 10px;cursor:pointer;display:inline-block;}
+.card .meaning{font-family:Georgia,"Times New Roman",serif;font-size:1.06rem;
+  margin:0 0 8px;color:#34302b;}
+.card .meaning q{background:var(--accent-soft);padding:2px 9px;border-radius:7px;}
+.card .example{color:#4a453f;margin:0;font-style:italic;font-size:.98rem;}
+.card .example b{font-weight:700;font-style:normal;}
+.rule{color:#4a453f;margin:16px 0;padding-left:12px;border-left:3px solid #d9cfbf;
+  font-size:.97rem;}
+body.selftest .card .meaning, body.selftest .card .example{display:none;}
+body.selftest .card.show .meaning, body.selftest .card.show .example{display:block;}
+body.selftest .chip .gloss{display:none;}
+body.selftest .chip.show .gloss{display:block;}
+body.selftest .chip{cursor:pointer;}
+.biglink{display:block;background:var(--card);border:1px solid var(--line);
+  border-radius:14px;padding:18px 22px;margin:14px 0;text-decoration:none;
+  color:var(--ink);box-shadow:0 1px 3px rgba(0,0,0,.05);}
+.biglink:hover{border-color:var(--accent);}
+.biglink .t{font-size:1.12rem;color:var(--accent);font-weight:600;}
+.biglink .d{color:var(--muted);font-size:.9rem;margin-top:2px;}
+section h2{margin-top:30px;font-size:1.12rem;}
+ol,ul{padding-left:22px;}
+@media (max-width:640px){
+  .wrap{padding:12px 12px 120px}
+  h1{font-size:1.3rem}
+  .controls{padding:8px 2px 10px;gap:8px}
+  .controls input[type=search]{padding:10px 12px;font-size:16px}
+  .controls select{padding:10px 8px;font-size:16px}
+  .controls label{font-size:15px}
+  .card{padding:18px 16px;margin:10px 0;min-height:28vh;display:flex;
+    flex-direction:column;justify-content:center;border-radius:16px}
+  .card .word{font-size:1.7rem}
+  .card .meaning{font-size:1.12rem}
+  .card .example{font-size:1rem}
+  .card .badge{font-size:.75rem;padding:3px 10px}
+  .rule{font-size:1rem;line-height:1.7}
+  .cat h2{font-size:1.15rem}
+  .grid{grid-template-columns:repeat(auto-fill,minmax(148px,1fr));gap:10px}
+  .chip{padding:14px;border-radius:14px}
+  .chip .word{font-size:1.45rem}
+  .chip .gloss{font-size:.95rem}
+  .panel{max-height:55vh}
+  .biglink{padding:18px 16px}
+}
+@media print{
+  .controls,nav.top{display:none}
+  body{background:#fff}
+  .card,.chip{box-shadow:none}
+}
+</style>
+</head>
+<body>
+<div class="wrap">
+  <nav class="top"><a href="index.html">首页</a><a href="layer0.html">词表</a><a href="layer1.html">第 1 层</a><a href="layer2.html">第 2 层</a><a href="layer3.html">第 3 层</a><a href="layer4.html">第 4 层</a><a href="layer5.html">第 5 层</a><a href="layer6.html">第 6 层</a><a href="layer7.html">第 7 层</a><a href="layer8.html">第 8 层</a><a href="layer9.html">第 9 层</a><a href="layer10.html">第 10 层</a><a href="layer11.html">第 11 层</a><a href="layer12.html">第 12 层</a><a href="layer13.html">第 13 层</a><a href="layer14.html">第 14 层</a><a href="layer15.html">第 15 层</a><a href="layer16.html">第 16 层</a><a href="layer17.html">第 17 层</a><a href="layer18.html">第 18 层</a><a href="layer19.html">第 19 层</a><a href="layer20.html">第 20 层</a><a href="layer21.html">第 21 层</a><a href="layer22.html">第 22 层</a><a href="layer23.html">第 23 层</a><a href="layer24.html">第 24 层</a><a href="layer25.html">第 25 层</a><a href="layer26.html">第 26 层</a><a href="layer27.html">第 27 层</a><a href="layer28.html">第 28 层</a><a href="layer29.html">第 29 层</a><a href="layer1_preview.html">预热</a></nav>
+  <h1>English Bootstrap · 英语自举</h1>
+  <p class="subtitle">从 201 个公理词出发，只用英语定义一切</p>
+  
+  
+<a class="biglink" href="layer0.html">
+  <div class="t">第 0 层 · 基础词表</div>
+  <div class="d">201 个公理词——直接记忆，不定义</div>
+</a><a class="biglink" href="layer1.html"><div class="t">第 1 层 · 词性与最基础语法</div><div class="d">63 个词条，全部只用前面层已定义词</div></a><a class="biglink" href="layer2.html"><div class="t">第 2 层 · 高中到大一全部常用语法</div><div class="d">54 个词条，全部只用前面层已定义词</div></a><a class="biglink" href="layer3.html"><div class="t">第 3 层 · 牛津3000 第1批</div><div class="d">25 个词条，全部只用前面层已定义词</div></a><a class="biglink" href="layer4.html"><div class="t">第 4 层 · 牛津3000 第2批</div><div class="d">130 个词条，全部只用前面层已定义词</div></a><a class="biglink" href="layer5.html"><div class="t">第 5 层 · 牛津3000 第3批</div><div class="d">113 个词条，全部只用前面层已定义词</div></a><a class="biglink" href="layer6.html"><div class="t">第 6 层 · 牛津3000 第4批</div><div class="d">113 个词条，全部只用前面层已定义词</div></a><a class="biglink" href="layer7.html"><div class="t">第 7 层 · 牛津3000 第5批</div><div class="d">111 个词条，全部只用前面层已定义词</div></a><a class="biglink" href="layer8.html"><div class="t">第 8 层 · 牛津3000 第6批</div><div class="d">105 个词条，全部只用前面层已定义词</div></a><a class="biglink" href="layer9.html"><div class="t">第 9 层 · 牛津3000 第7批</div><div class="d">103 个词条，全部只用前面层已定义词</div></a><a class="biglink" href="layer10.html"><div class="t">第 10 层 · 牛津3000 第8批</div><div class="d">103 个词条，全部只用前面层已定义词</div></a><a class="biglink" href="layer11.html"><div class="t">第 11 层 · 牛津3000 第9批</div><div class="d">96 个词条，全部只用前面层已定义词</div></a><a class="biglink" href="layer12.html"><div class="t">第 12 层 · 牛津3000 第10批</div><div class="d">98 个词条，全部只用前面层已定义词</div></a><a class="biglink" href="layer13.html"><div class="t">第 13 层 · 牛津3000 第11批</div><div class="d">95 个词条，全部只用前面层已定义词</div></a><a class="biglink" href="layer14.html"><div class="t">第 14 层 · 牛津3000 第12批</div><div class="d">95 个词条，全部只用前面层已定义词</div></a><a class="biglink" href="layer15.html"><div class="t">第 15 层 · 牛津3000 第13批</div><div class="d">112 个词条，全部只用前面层已定义词</div></a><a class="biglink" href="layer16.html"><div class="t">第 16 层 · 牛津3000 第14批</div><div class="d">100 个词条，全部只用前面层已定义词</div></a><a class="biglink" href="layer17.html"><div class="t">第 17 层 · 牛津3000 第15批</div><div class="d">105 个词条，全部只用前面层已定义词</div></a><a class="biglink" href="layer18.html"><div class="t">第 18 层 · 牛津3000 第16批</div><div class="d">98 个词条，全部只用前面层已定义词</div></a><a class="biglink" href="layer19.html"><div class="t">第 19 层 · 牛津3000 第17批</div><div class="d">89 个词条，全部只用前面层已定义词</div></a><a class="biglink" href="layer20.html"><div class="t">第 20 层 · 牛津3000 第18批</div><div class="d">109 个词条，全部只用前面层已定义词</div></a><a class="biglink" href="layer21.html"><div class="t">第 21 层 · 牛津3000 批次</div><div class="d">96 个词条，全部只用前面层已定义词</div></a><a class="biglink" href="layer22.html"><div class="t">第 22 层 · 牛津3000 批次</div><div class="d">112 个词条，全部只用前面层已定义词</div></a><a class="biglink" href="layer23.html"><div class="t">第 23 层 · 牛津3000 批次</div><div class="d">110 个词条，全部只用前面层已定义词</div></a><a class="biglink" href="layer24.html"><div class="t">第 24 层 · 牛津3000 批次</div><div class="d">102 个词条，全部只用前面层已定义词</div></a><a class="biglink" href="layer25.html"><div class="t">第 25 层 · 牛津3000 批次</div><div class="d">147 个词条，全部只用前面层已定义词</div></a><a class="biglink" href="layer26.html"><div class="t">第 26 层 · 牛津3000 批次</div><div class="d">210 个词条，全部只用前面层已定义词</div></a><a class="biglink" href="layer27.html"><div class="t">第 27 层 · 牛津3000 批次</div><div class="d">308 个词条，全部只用前面层已定义词</div></a><a class="biglink" href="layer28.html"><div class="t">第 28 层 · 牛津3000 批次</div><div class="d">79 个词条，全部只用前面层已定义词</div></a><a class="biglink" href="layer29.html"><div class="t">第 29 层 · 牛津3000 批次</div><div class="d">0 个词条，全部只用前面层已定义词</div></a>
+<a class="biglink" href="layer1_preview.html">
+  <div class="t">第 1 层预热 · 机制演示</div>
+  <div class="d">44 个新词，全部只用第 0 层 201 词定义和举例</div>
+</a>
+<section>
+  <h2>这套材料怎么读</h2>
+  <ol>
+    <li>先通读第 0 层词表。大部分词你早就认识，这一步是把它们正式“封存”为公理；中文速记只在这一层出现。</li>
+    <li>按顺序读各层：先看每节的正文规则，再看词条；开“自测模式”可以把释义藏起来，自己先想。</li>
+    <li>以后每完成一层：在 md 里写词条 → 运行 <code>python tools/build_read.py</code> 重新生成阅读版 → 运行 <code>python tools/check.py --preview</code> 验证用词不超纲。</li>
+  </ol>
+</section>
+<section>
+  <h2>三条硬规则</h2>
+  <ul>
+    <li>从第 1 层起，每个新词只用“第 0 层 + 之前已定义词”的英语来解释。</li>
+    <li>每个词条三句话：“apple” is a noun. / The meaning of “apple” is “…”. / Example: “…”。</li>
+    <li>词形变化不算新词（went→go、books→book）；禁止 don't 这类缩合形式。</li>
+  </ul>
+</section>
+<section>
+  <h2>文件与工具</h2>
+  <ul>
+    <li>数据源（唯一事实）：<code>layers/layer0.md</code> 到 <code>layers/layerN.md</code>（自动发现）</li>
+    <li>阅读版生成：<code>python tools/build_read.py</code></li>
+    <li>严格检查：<code>python tools/check.py --preview</code></li>
+  </ul>
+</section>
+
+</div>
+<script>
+var q=document.getElementById('q');
+var cat=document.getElementById('cat');
+var selftest=document.getElementById('selftest');
+function apply(){
+  if(!q||!cat) return;
+  var qv=q.value.trim().toLowerCase();
+  var cv=cat.value;
+  document.querySelectorAll('[data-search]').forEach(function(el){
+    var ok=(!qv||el.getAttribute('data-search').indexOf(qv)>-1)&&(!cv||el.getAttribute('data-cat')===cv);
+    el.style.display=ok?'':'none';
+  });
+  document.querySelectorAll('section.cat').forEach(function(sec){
+    var any=false;
+    sec.querySelectorAll('[data-search]').forEach(function(el){
+      if(el.style.display!=='none'){any=true;}
+    });
+    sec.style.display=any?'':'none';
+  });
+}
+if(q) q.addEventListener('input',apply);
+if(cat) cat.addEventListener('change',apply);
+if(selftest){
+  selftest.addEventListener('change',function(){
+    document.body.classList.toggle('selftest',selftest.checked);
+  });
+  document.querySelectorAll('.card .word,.chip').forEach(function(el){
+    el.addEventListener('click',function(){el.classList.toggle('show');});
+  });
+}
+</script>
+</body>
+</html>
